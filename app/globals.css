@@ -1,0 +1,726 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Inter as primary font for body text and everything else */
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* R2 Font for logo and highly designed elements only */
+  --font-heading: var(--font-r2), var(--font-inter), sans-serif;
+  --font-heading-bold: var(--font-r2-bold), var(--font-r2), var(--font-inter), sans-serif;
+  /* Inter for all typography */
+  --font-inter: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  /* Breakpoints - Tailwind v4 */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+  --r2-blue: #032CC8;
+  --r2-blue-hover: #023d63;
+  --urgent-orange: #D18A0F;
+  --urgent-orange-hover: #B7770C;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #ffffff;
+}
+
+body {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #111827;
+  background: #ffffff;
+  line-height: 1.5;
+}
+
+/* Global box sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Scroll root */
+.scroll-root {
+  scroll-padding-top: 100px;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(2, 80, 130, 0.1);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+/* Prevent text overflow */
+h1, h2, h3, h4, h5, h6, p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* R2 Font @font-face declarations */
+@font-face {
+  font-family: 'R2Font';
+  src: url('/R2Font.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'R2Font';
+  src: url('/R2FontBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Headers default to Inter - can be overridden with inline styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+}
+
+/* Only specific classes use R2 Font (logo and highly designed elements) */
+.hero-display,
+.section-eyebrow,
+.eyebrow,
+.subheadline {
+  font-family: var(--font-r2), var(--font-inter), sans-serif;
+  font-weight: 600;
+}
+
+/* Bold hero display for main hero section */
+.hero-display-bold {
+  font-family: var(--font-r2-bold), var(--font-r2), var(--font-inter), sans-serif !important;
+  font-weight: 700;
+}
+
+/* Headings - keep main hero/section titles uppercase */
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* Body text - Inter for everything */
+p,
+li,
+small,
+button,
+input,
+textarea,
+select,
+span,
+div,
+a {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.7;
+}
+
+/* Exception: sup elements inside spans with R² Font should use R² Font */
+span[style*="font-r2"] sup,
+span[style*="R2Font"] sup {
+  font-family: var(--font-r2-bold), var(--font-r2), serif !important;
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+*:focus-visible {
+  outline: 2px solid var(--r2-blue);
+  outline-offset: 2px;
+}
+
+/* Remove focus outline from header nav links */
+header nav a:focus,
+header nav a:focus-visible,
+header nav div:focus,
+header nav div:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ============================================
+   LINKS
+   ============================================ */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================
+   IMAGES
+   ============================================ */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================
+   MAIN CONTENT SPACING
+   ============================================ */
+/* Removed fixed padding - hero handles its own spacing */
+
+/* ============================================
+   RESPONSIVE GRIDS
+   ============================================ */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ============================================
+   CAROUSEL CARDS
+   ============================================ */
+.carousel-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-nav-btn {
+  display: flex;
+}
+
+.carousel-card {
+  position: relative;
+}
+
+.card-background {
+  filter: blur(0px) brightness(1);
+  -webkit-filter: blur(0px) brightness(1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), -webkit-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-card.card-hovered .card-background {
+  filter: blur(25px) brightness(1.15);
+  -webkit-filter: blur(25px) brightness(1.15);
+  will-change: filter, -webkit-filter;
+}
+
+.carousel-card.card-hovered::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+@media (max-width: 768px) {
+  .carousel-nav-btn {
+    display: none !important;
+  }
+}
+
+/* Desktop: hover on centered card to show glass */
+@media (min-width: 769px) {
+  .glass-hover-card:hover .glass-overlay {
+    opacity: 1 !important;
+  }
+
+  .glass-hover-card:hover .default-content {
+    opacity: 0 !important;
+  }
+}
+
+.articles-layout {
+  flex-direction: row;
+}
+
+/* DESKTOP: Set flex from data attribute */
+.article-tiles-column[data-desktop-flex] {
+  flex: 0 0 38%;
+}
+
+.article-tile[data-desktop-flex] {
+  flex: 1;
+}
+
+/* ARTICLE TILES - Ensure no cutoff */
+.article-tiles-column {
+  overflow: visible !important;
+}
+
+.article-tile {
+  overflow: visible !important;
+  margin-bottom: 0 !important;
+}
+
+.article-tile:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* MOBILE ARTICLE TILES - AGGRESSIVE CSS OVERRIDE */
+@media (max-width: 640px) {
+  /* Section padding fix for mobile - EXTRA GENEROUS */
+  .articles-section-mobile-fix {
+    padding-top: 80px !important;
+    padding-bottom: 200px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow: visible !important;
+    position: relative !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+  }
+  
+  /* Reduce container padding on mobile */
+  .mobile-articles-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 80px !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    margin-bottom: 0 !important;
+    position: relative !important;
+  }
+  
+  /* Force articles layout to column */
+  .articles-layout {
+    flex-direction: column !important;
+    gap: 20px !important;
+    overflow: visible !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    position: relative !important;
+  }
+  
+  /* LEFT COLUMN - Full width on mobile with fixed height */
+  .articles-layout > div:first-child {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    flex-basis: auto !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    max-width: 100% !important;
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+    margin-bottom: 0 !important;
+  }
+  
+  /* Ensure inner content fills the card */
+  .articles-layout > div:first-child > div {
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+  
+  /* RIGHT COLUMN - OVERRIDE EVERYTHING */
+  .article-tiles-column.mobile-article-tiles,
+  .articles-layout > div:last-child.mobile-article-tiles,
+  .mobile-article-tiles {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+    flex-basis: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    overflow: visible !important;
+    padding-bottom: 60px !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    position: relative !important;
+  }
+  
+  /* INDIVIDUAL TILES - OVERRIDE INLINE STYLES */
+  .article-tiles-column .article-tile,
+  .mobile-article-tiles .article-tile,
+  .article-tile {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    flex-basis: auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    min-height: 100px !important;
+    padding: 32px 28px !important;
+    overflow: visible !important;
+    margin-bottom: 0 !important;
+    position: relative !important;
+  }
+  
+  /* LAST TILE - Extra padding to prevent cutoff */
+  .article-tile:last-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 50px !important;
+    margin-bottom: 0 !important;
+  }
+  
+  /* TILE TEXT - Larger and bolder */
+  .article-tile > div:last-child {
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+  }
+}
+
+/* ============================================
+   SCROLL INDICATOR ANIMATION
+   ============================================ */
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+.scroll-arrow {
+  animation: arrowBounce 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   HERO RESPONSIVE
+   ============================================ */
+.hero-content {
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column !important;
+    gap: 40px !important;
+    text-align: center;
+  }
+}
+
+/* ============================================
+   HEADER RESPONSIVE
+   ============================================ */
+.header-desktop-nav {
+  display: none;
+}
+
+.header-hamburger {
+  display: flex;
+}
+
+@media (min-width: 1024px) {
+  .header-desktop-nav {
+    display: flex !important;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .header-hamburger {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   FOUNDER CARDS RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .founder-card {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  
+  .founder-card > div:first-child {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+}
+
+/* ============================================
+   MAGIC UI ANIMATIONS
+   ============================================ */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(-45deg);
+  }
+}
+
+.animate-shimmer-slide {
+  animation: shimmer-slide 3s ease-in-out infinite;
+}
+
+@keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+  }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+  }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+  }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+  }
+}
+
+.animate-spin-around {
+  animation: spin-around calc(var(--speed) * 2) infinite linear;
+}
+
+@keyframes rippling {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.animate-rippling {
+  animation: rippling 600ms ease-out;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animate-shine {
+  animation: shine var(--duration, 14s) ease-in-out infinite;
+}
+
+/* ============================================
+   MARQUEE ANIMATION
+   ============================================ */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap, 1rem)));
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap, 1rem)));
+  }
+}
+
+.animate-marquee {
+  animation: marquee var(--duration, 40s) linear infinite;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration, 40s) linear infinite;
+}
+
+/* ============================================
+   RAINBOW BUTTON ANIMATION
+   ============================================ */
+:root {
+  --color-1: #032CC8;
+  --color-2: #0369a1;
+  --color-3: #0284c7;
+  --color-4: #0ea5e9;
+  --color-5: #38bdf8;
+  --primary: #032CC8;
+  --primary-foreground: #ffffff;
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-rainbow {
+  animation: rainbow 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* ============================================
+   ROTATING GRADIENT BUTTON ANIMATION
+   ============================================ */
+@keyframes rotating-gradient-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating-gradient-btn {
+  position: relative;
+  display: inline-flex;
+  height: 48px;
+  overflow: hidden;
+  border-radius: 9999px; /* Fully rounded pill shape */
+  padding: 2px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rotating-gradient-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 20px rgba(2, 80, 130, 0.25);
+}
+
+.rotating-gradient-btn:active {
+  transform: scale(0.98);
+}
+
+.rotating-gradient-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(2, 80, 130, 0.3), 0 0 0 4px rgba(2, 80, 130, 0.1);
+}
+
+.rotating-gradient-spinner {
+  position: absolute;
+  inset: -1000%;
+  animation: rotating-gradient-spin 2s linear infinite;
+}
+
+.rotating-gradient-inner {
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px; /* Match outer pill shape */
+  background-color: #ffffff;
+  padding: 4px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.rotating-gradient-btn:hover .rotating-gradient-inner {
+  background-color: #f8fafc;
+}
+
+/* ============================================
+   RETRO GRID ANIMATION
+   ============================================ */
+@keyframes retro-grid {
+  0% {
+    transform: rotateX(65deg) translateY(-50%);
+  }
+  100% {
+    transform: rotateX(65deg) translateY(0%);
+  }
+}
+
+@keyframes retro-grid-scroll {
+  0% {
+    transform: rotateX(65deg) translateY(-50%);
+  }
+  100% {
+    transform: rotateX(65deg) translateY(0%);
+  }
+}
+
+/* ============================================
+   ANIMATED GRID PATTERN - FLICKERING SQUARES
+   ============================================ */
+@keyframes grid-square-fade {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ============================================
+   LIGHT RAYS ANIMATION
+   ============================================ */
+@keyframes light-ray-pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY: REDUCED MOTION SUPPORT
+   Respects user preference for reduced animations
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable specific animation classes */
+  .animate-gradient,
+  .animate-shimmer-slide,
+  .animate-spin-around,
+  .animate-rippling,
+  .animate-shine,
+  .animate-marquee,
+  .animate-marquee-vertical,
+  .animate-rainbow,
+  .scroll-arrow {
+    animation: none !important;
+  }
+}

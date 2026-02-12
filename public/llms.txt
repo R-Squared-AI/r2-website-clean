@@ -1,0 +1,58 @@
+# R² AI
+
+> Production-grade AI agents for sales intelligence and revenue operations. We build working systems, not slideware. Deployed in 6-8 weeks.
+
+R² AI (R Squared AI, Inc.) is an AI consulting and engineering firm that builds and deploys production-grade AI agents for revenue teams. Founded by operators — not consultants — who have carried quota, architected enterprise systems at Fortune 500 scale, and deployed AI agents running production workloads.
+
+## What We Build
+
+- [Homepage](https://rsquaredai.com): Overview of R² AI's sales intelligence platform and AI agent capabilities
+- [Contact / Book a Demo](https://form.typeform.com/to/XPforiEB): Schedule a 30-minute consultation
+
+## Core Services
+
+### Expansion & Cross-Sell Intelligence
+AI agents analyze usage patterns, contract timelines, and engagement signals to surface 15-30% more pipeline from existing customers.
+
+### Pipeline Intelligence
+Real-time deal health scoring powered by conversation analysis, engagement tracking, and win/loss patterns. Alerts before opportunities disappear.
+
+### Sales Enablement & CRM Automation
+Automatic call logging, contact updates, and activity capture. Reps sell. AI does the CRM hygiene.
+
+### Audit-Ready AI Compliance
+Full audit trails on every AI action. Explainable decisions. No black boxes. Regulatory ready.
+
+### Stack Enhancement
+Intelligence layer on top of Salesforce, Dynamics, HubSpot, ERP, email, and conversation platforms. No migrations. No rip-and-replace.
+
+## Industries Served
+
+- **Private Equity**: Fast operational wins for portfolio companies
+- **Insurance**: Producer enablement and policy intelligence
+- **Manufacturing**: Long-cycle tracking and complex product management
+
+## Founders
+
+- **Rich Rivara, CEO**: 20+ years scaling revenue ops at enterprise tech companies. Former executive at Appirio (acquired for $500M) and BridgeNext. Built sales orgs from $0 to 8-figure ARR. [LinkedIn](https://www.linkedin.com/in/rich-rivara-388ba82/)
+- **Will Godfrey, CTO**: Former McKinsey technologist. Architected enterprise systems for Fortune 500 ($500M-$1B+ revenue). Led Google Workspace rollout for City of Boston (30,000+ users). [LinkedIn](https://www.linkedin.com/in/willgodfrey/)
+- **Tyler Preisser, CPO**: AI-native product leader. Former VP of Operations who automated entire back office using agentic AI — production systems processing thousands of workflows daily. [LinkedIn](https://www.linkedin.com/in/tyler-preisser-803605233/)
+
+## Key Differentiators
+
+- Builders, not advisors — we deploy working AI agents, not slideware
+- 6-8 week deployment timeline from discovery to production
+- Founding team has carried quota and built enterprise systems
+- Enterprise-grade security with full audit trails
+- No rip-and-replace — we enhance your existing tech stack
+
+## Company Links
+
+- [LinkedIn](https://www.linkedin.com/company/r-squared-ai)
+- [Book a Meeting](https://form.typeform.com/to/XPforiEB)
+
+## Contact
+
+- Website: https://rsquaredai.com
+- Contact Form: https://form.typeform.com/to/XPforiEB
+- Email: contact@rsquaredai.com

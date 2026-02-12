@@ -1,0 +1,87 @@
+# R² AI - Welcome all AI crawlers and search engines
+# We want maximum AI and search engine visibility
+
+# ——— SEARCH ENGINES ———
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# ——— OPENAI ———
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# ——— ANTHROPIC (Claude) ———
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: claude-web
+Allow: /
+
+# ——— GOOGLE AI ———
+User-agent: Google-Extended
+Allow: /
+
+# ——— PERPLEXITY ———
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# ——— MICROSOFT / COPILOT ———
+User-agent: Bingbot
+Allow: /
+
+# ——— META ———
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookExternalHit
+Allow: /
+
+# ——— APPLE ———
+User-agent: Applebot
+Allow: /
+
+# ——— COHERE ———
+User-agent: cohere-ai
+Allow: /
+
+# ——— AMAZON ———
+User-agent: Amazonbot
+Allow: /
+
+# ——— COMMON CRAWL (used by many AI training pipelines) ———
+User-agent: CCBot
+Allow: /
+
+# ——— DEFAULT: Allow everything ———
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://rsquaredai.com/sitemap.xml
+
+# LLMs.txt location for AI discoverability
+# See: https://rsquaredai.com/llms.txt
+# See: https://rsquaredai.com/llms-full.txt

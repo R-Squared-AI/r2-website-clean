@@ -1,0 +1,58 @@
+# R² AI - Cloudflare Pages Custom Headers
+# Security headers and caching optimization
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Static assets - aggressive caching (1 year)
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# Favicon and logos - long cache
+/favicon*
+  Cache-Control: public, max-age=2592000
+
+/r2-logo*
+  Cache-Control: public, max-age=2592000
+
+/apple-touch-icon*
+  Cache-Control: public, max-age=2592000
+
+/android-chrome*
+  Cache-Control: public, max-age=2592000
+
+/og-image*
+  Cache-Control: public, max-age=86400
+
+# SEO/AI files - moderate cache to allow updates
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+
+/llms.txt
+  Cache-Control: public, max-age=86400
+
+/llms-full.txt
+  Cache-Control: public, max-age=86400
+
+/manifest.json
+  Cache-Control: public, max-age=86400

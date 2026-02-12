@@ -1,0 +1,148 @@
+/* Hero Grid */
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  min-height: auto;
+}
+
+@media (min-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1.4fr 0.6fr;
+    min-height: 520px;
+  }
+}
+
+/* Main Article */
+.mainArticle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 360px;
+  padding: 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .mainArticle {
+    padding: 40px;
+  }
+}
+
+.mainArticleTitle {
+  font-family: var(--font-r2), var(--font-roboto-mono), serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.15;
+  margin: 0 0 12px 0;
+  max-width: 90%;
+}
+
+@media (min-width: 1024px) {
+  .mainArticleTitle {
+    font-size: 42px;
+  }
+}
+
+.mainArticleDesc {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  max-width: 600px;
+}
+
+@media (min-width: 1024px) {
+  .mainArticleDesc {
+    font-size: 18px;
+  }
+}
+
+/* Right Cards Stack */
+.cardsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+/* R² Callout Section */
+.calloutSection {
+  background: linear-gradient(135deg, #025082 0%, #013a5f 100%);
+  border-radius: 12px;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .calloutSection {
+    padding: 48px 56px;
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+.calloutTitle {
+  font-family: var(--font-r2), var(--font-roboto-mono), serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+  margin: 0 0 16px 0;
+}
+
+@media (min-width: 1024px) {
+  .calloutTitle {
+    font-size: 32px;
+  }
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Help + Industries Grid */
+.helpIndustriesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+@media (min-width: 1024px) {
+  .helpIndustriesGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* Ribbon stats */
+.ribbonStats {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 1024px) {
+  .ribbonStats {
+    gap: 48px;
+  }
+}

@@ -1170,6 +1170,7 @@ export default function HomePage() {
     <div style={{
       width: '100%',
       position: 'relative',
+      background: '#ffffff',
       paddingLeft: 'env(safe-area-inset-left, 0px)',
       paddingRight: 'env(safe-area-inset-right, 0px)',
     }}>

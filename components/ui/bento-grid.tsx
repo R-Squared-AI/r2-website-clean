@@ -64,23 +64,18 @@ const BentoCard = ({
           color: rgba(255, 255, 255, 0.7);
           font-style: italic;
           margin: 0;
-          display: flex;
-          align-items: center;
-          gap: 4px;
           margin-top: 8px;
+          animation: hintFloat 2s ease-in-out infinite;
         }
-        .bento-hint svg {
-          animation: hintBounce 2s ease-in-out infinite;
-        }
-        @keyframes hintBounce {
+        @keyframes hintFloat {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(3px); }
         }
-        .bento-hint-desktop { display: flex; }
+        .bento-hint-desktop { display: block; }
         .bento-hint-mobile { display: none; }
         @media (max-width: 768px) {
           .bento-hint-desktop { display: none; }
-          .bento-hint-mobile { display: flex; }
+          .bento-hint-mobile { display: block; }
         }
       `}} />
       <div
@@ -172,18 +167,8 @@ const BentoCard = ({
         >
           {name}
         </h3>
-        <p className="bento-hint bento-hint-desktop">
-          <span>Hover for more</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </p>
-        <p className="bento-hint bento-hint-mobile">
-          <span>Tap for more</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </p>
+        <p className="bento-hint bento-hint-desktop">Hover for more</p>
+        <p className="bento-hint bento-hint-mobile">Tap for more</p>
       </motion.div>
 
       {/* Hover Content - Expanded details */}

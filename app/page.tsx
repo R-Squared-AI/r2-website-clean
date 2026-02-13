@@ -157,28 +157,23 @@ function CombinedSkylineHowWeThinkSection() {
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `
-        /* Unified card hint styles with bounce animation */
+        /* Unified card hint styles with text float animation */
         .card-hint {
           font-size: 0.85rem;
           color: rgba(255, 255, 255, 0.7);
           font-style: italic;
           margin: 0;
-          display: flex;
-          align-items: center;
-          gap: 4px;
+          animation: hintFloat 2s ease-in-out infinite;
         }
-        .card-hint svg {
-          animation: hintBounce 2s ease-in-out infinite;
-        }
-        @keyframes hintBounce {
+        @keyframes hintFloat {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(3px); }
         }
-        .card-hint-desktop { display: flex; }
+        .card-hint-desktop { display: block; }
         .card-hint-mobile { display: none; }
         @media (max-width: 768px) {
           .card-hint-desktop { display: none; }
-          .card-hint-mobile { display: flex; }
+          .card-hint-mobile { display: block; }
         }
 
         .hwt-card-zigzag { width: 42%; max-width: 500px; }
@@ -414,18 +409,8 @@ function CombinedSkylineHowWeThinkSection() {
                 >
                   {item.title}
                 </h3>
-                <p className="card-hint card-hint-desktop">
-                  <span>Hover for more</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </p>
-                <p className="card-hint card-hint-mobile">
-                  <span>Tap for more</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </p>
+                <p className="card-hint card-hint-desktop">Hover for more</p>
+                <p className="card-hint card-hint-mobile">Tap for more</p>
               </div>
               {/* Hover/tap content (description) */}
               <div
@@ -617,18 +602,8 @@ function SimpleIndustriesSection() {
                     >
                       {industry.description}
                     </p>
-                    <p className="card-hint card-hint-desktop">
-                      <span>Hover for more</span>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </p>
-                    <p className="card-hint card-hint-mobile">
-                      <span>Tap for more</span>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </p>
+                    <p className="card-hint card-hint-desktop">Hover for more</p>
+                    <p className="card-hint card-hint-mobile">Tap for more</p>
                   </div>
                   {/* Hover/tap content (expanded details) */}
                   <div

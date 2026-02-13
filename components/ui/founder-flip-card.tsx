@@ -203,9 +203,10 @@ export function FounderFlipCard({ name, role, image, description, linkedInUrl, i
             background: '#fff',
             transform: 'rotateY(180deg)',
             padding: 'clamp(16px, 3vw, 32px)',
+            paddingTop: 'clamp(40px, 8vh, 80px)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
           }}
         >

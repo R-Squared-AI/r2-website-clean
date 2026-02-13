@@ -398,7 +398,7 @@ export default function RootLayout({
 
         {/* Preload critical assets */}
         <link rel="preload" as="image" href="/og-image.png" />
-        <link rel="preload" as="image" href="/r2-logo.png" />
+        <link rel="preload" as="image" href="/r2-logo.webp" type="image/webp" />
 
         {/* Schema.org structured data */}
         <script

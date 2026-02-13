@@ -1566,8 +1566,10 @@ export function LiquidGlassHeader() {
               }}
             >
               <img
-                src="/r2-logo.png"
+                src="/r2-logo.webp"
                 alt="R²"
+                loading="eager"
+                fetchPriority="high"
                 key={`logo-desktop-${logoTheme}`}
                 style={{
                   display: 'block',
@@ -1761,8 +1763,10 @@ export function LiquidGlassHeader() {
               }}
             >
               <img
-                src="/r2-logo.png"
+                src="/r2-logo.webp"
                 alt="R²"
+                loading="eager"
+                fetchPriority="high"
                 key={`logo-mobile-${logoTheme}`}
                 style={{
                   display: 'block',

@@ -10,14 +10,13 @@ interface FounderFlipCardProps {
   role: string
   image: string
   description: string
-  background?: string
   linkedInUrl?: string
   index: number
   /** If true, removes box shadow and reduces border radius for cleaner look */
   noShadow?: boolean
 }
 
-export function FounderFlipCard({ name, role, image, description, background, linkedInUrl, index, noShadow = false }: FounderFlipCardProps) {
+export function FounderFlipCard({ name, role, image, description, linkedInUrl, index, noShadow = false }: FounderFlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -206,15 +205,57 @@ export function FounderFlipCard({ name, role, image, description, background, li
             padding: 'clamp(16px, 3vw, 32px)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
           }}
         >
+          {/* Blue pill with name + role at top center */}
+          <div
+            style={{
+              background: 'linear-gradient(135deg, rgba(2, 80, 130, 0.95) 0%, rgba(1, 58, 95, 0.95) 100%)',
+              padding: '10px 20px',
+              borderRadius: '24px',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              marginBottom: 'clamp(16px, 2vw, 24px)',
+              flexShrink: 0,
+            }}
+          >
+            <span
+              style={{
+                color: '#fff',
+                fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+                fontWeight: 700,
+                fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {name}
+            </span>
+            <span
+              style={{
+                color: 'rgba(255, 255, 255, 0.85)',
+                fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
+                fontWeight: 500,
+                fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {role}
+            </span>
+          </div>
+
+          {/* Description text - centered */}
           <div
             style={{
               overflowY: 'auto',
+              flex: 1,
               display: 'flex',
               flexDirection: 'column',
-              maxHeight: '100%',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
             <div
@@ -222,35 +263,23 @@ export function FounderFlipCard({ name, role, image, description, background, li
                 fontSize: 'clamp(0.75rem, 1.2vw, 0.95rem)',
                 color: '#1f2937',
                 lineHeight: 1.6,
+                textAlign: 'center',
                 fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
               }}
             >
               {description}
             </div>
-            <div
-              style={{
-                marginTop: 'clamp(12px, 2vw, 24px)',
-                paddingTop: 'clamp(12px, 2vw, 24px)',
-                borderTop: '1px solid #e5e7eb',
-                fontSize: 'clamp(0.7rem, 1.1vw, 0.9rem)',
-                color: '#6b7280',
-                fontStyle: 'italic',
-                fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                flexShrink: 0,
-              }}
-            >
-              <strong style={{ color: '#032CC8' }}>Background:</strong> {background}
-            </div>
           </div>
 
-          {/* LinkedIn link on back of card */}
+          {/* LinkedIn link - centered at bottom */}
           {linkedInUrl && (
             <div
               style={{
                 marginTop: 'clamp(12px, 2vw, 20px)',
                 display: 'flex',
-                justifyContent: 'flex-start',
+                justifyContent: 'center',
                 flexShrink: 0,
+                width: '100%',
               }}
             >
               <Link

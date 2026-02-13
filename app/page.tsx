@@ -7,6 +7,7 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { motion } from 'framer-motion';
 
 // Import existing UI components
 import { Particles } from '@/components/ui/particles';
@@ -95,6 +96,34 @@ function SimpleHeroSection() {
 
       {/* Hero content */}
       <HeroContentSection />
+
+      {/* Animated scroll arrow */}
+      <motion.div
+        animate={{ y: [0, 12, 0] }}
+        transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+        style={{
+          position: 'absolute',
+          bottom: 'clamp(24px, 4vh, 48px)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          cursor: 'pointer',
+          zIndex: 2,
+        }}
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.6)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </motion.div>
     </section>
   );
 }
@@ -172,250 +201,285 @@ function SimpleCitySkylineSection() {
   );
 }
 
-// Simple Industries Section - clean grid of industry cards
+// Industries Section - Sticky left heading, scrolling right cards
 function SimpleIndustriesSection() {
-  const [isMobile, setIsMobile] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
-    <section
-      data-header-theme="light"
-      style={{
-        position: 'relative',
-        width: '100%',
-        background: '#ffffff',
-        padding: 'clamp(80px, 12vh, 120px) clamp(24px, 4vw, 48px)',
-      }}
-    >
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <h2
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            fontWeight: 700,
-            color: '#111827',
-            marginBottom: 48,
-            textTransform: 'uppercase',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.1,
-          }}
-        >
-          WHO WE SERVE
-        </h2>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: '24px',
-          }}
-        >
-          {industries.map((industry, index) => (
-            <div
-              key={index}
-              style={{
-                position: 'relative',
-                borderRadius: 12,
-                overflow: 'hidden',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                cursor: 'pointer',
-                transition: 'transform 0.2s ease',
-              }}
-              onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              {/* Card image */}
-              <div style={{ position: 'relative', height: '300px', width: '100%' }}>
-                <img
-                  src={industry.image}
-                  alt={industry.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-                {/* Gradient overlay */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
-                  }}
-                />
-              </div>
-              {/* Card text */}
-              <div
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .wws-layout {
+          display: grid;
+          grid-template-columns: 1fr 1.5fr;
+          gap: 48px;
+          align-items: start;
+        }
+        .wws-heading {
+          position: sticky;
+          top: calc(50vh - 4rem);
+          align-self: start;
+        }
+        @media (max-width: 768px) {
+          .wws-layout {
+            grid-template-columns: 1fr;
+            gap: 32px;
+          }
+          .wws-heading {
+            position: static;
+          }
+        }
+      `}} />
+      <section
+        data-header-theme="light"
+        style={{
+          position: 'relative',
+          width: '100%',
+          background: '#ffffff',
+          padding: 'clamp(80px, 12vh, 120px) clamp(24px, 4vw, 48px)',
+        }}
+      >
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div className="wws-layout">
+            {/* Left column - Sticky heading */}
+            <div className="wws-heading">
+              <h2
                 style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '24px',
+                  fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+                  fontWeight: 700,
+                  color: '#111827',
+                  margin: 0,
+                  textTransform: 'uppercase',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.1,
                 }}
               >
-                <h3
+                WHO WE SERVE
+              </h2>
+            </div>
+
+            {/* Right column - Scrolling cards */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {industries.map((industry, index) => (
+                <div
+                  key={index}
                   style={{
-                    fontSize: 'clamp(1.3rem, 1.8vw, 1.5rem)',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    marginBottom: 8,
-                    lineHeight: 1.3,
+                    position: 'relative',
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease',
+                  }}
+                  onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  {industry.name}
-                </h3>
-                <p
-                  style={{
-                    fontSize: 'clamp(0.9rem, 1.1vw, 1rem)',
-                    color: 'rgba(255,255,255,0.9)',
-                    lineHeight: 1.6,
-                    marginBottom: expandedIndex === index ? 12 : 0,
-                  }}
-                >
-                  {industry.description}
-                </p>
-                {expandedIndex === index && industry.expandedContent && (
-                  <p
+                  {/* Card image */}
+                  <div style={{ position: 'relative', height: '300px', width: '100%' }}>
+                    <img
+                      src={industry.image}
+                      alt={industry.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                    {/* Gradient overlay */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
+                      }}
+                    />
+                  </div>
+                  {/* Card text */}
+                  <div
                     style={{
-                      fontSize: 'clamp(0.85rem, 1vw, 0.95rem)',
-                      color: 'rgba(255,255,255,0.85)',
-                      lineHeight: 1.6,
-                      marginTop: 8,
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      padding: '24px',
                     }}
                   >
-                    {industry.expandedContent}
-                  </p>
-                )}
-              </div>
+                    <h3
+                      style={{
+                        fontSize: 'clamp(1.3rem, 1.8vw, 1.5rem)',
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        marginBottom: 8,
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {industry.name}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 'clamp(0.9rem, 1.1vw, 1rem)',
+                        color: 'rgba(255,255,255,0.9)',
+                        lineHeight: 1.6,
+                        marginBottom: expandedIndex === index ? 12 : 0,
+                      }}
+                    >
+                      {industry.description}
+                    </p>
+                    {expandedIndex === index && industry.expandedContent && (
+                      <p
+                        style={{
+                          fontSize: 'clamp(0.85rem, 1vw, 0.95rem)',
+                          color: 'rgba(255,255,255,0.85)',
+                          lineHeight: 1.6,
+                          marginTop: 8,
+                        }}
+                      >
+                        {industry.expandedContent}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
-// Simple How We Think Section - 3 cards in a clean layout
+// How We Think Section - Sticky heading, cards scroll over it
 function SimpleHowWeThinkSection() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
-    <section
-      data-header-theme="light"
-      style={{
-        position: 'relative',
-        width: '100%',
-        background: '#ffffff',
-        padding: 'clamp(80px, 12vh, 120px) clamp(24px, 4vw, 48px)',
-      }}
-    >
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <h2
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            fontWeight: 700,
-            color: '#111827',
-            marginBottom: 48,
-            textTransform: 'uppercase',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.1,
-          }}
-        >
-          HOW WE THINK
-        </h2>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-            gap: '24px',
-          }}
-        >
-          {aiCapabilities.map((item, index) => (
-            <div
-              key={index}
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hwt-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        @media (max-width: 768px) {
+          .hwt-cards-grid {
+            grid-template-columns: 1fr;
+          }
+          .hwt-sticky-heading {
+            position: static !important;
+            top: auto !important;
+          }
+        }
+      `}} />
+      <section
+        data-header-theme="light"
+        style={{
+          position: 'relative',
+          width: '100%',
+          background: '#ffffff',
+          padding: 'clamp(80px, 12vh, 120px) clamp(24px, 4vw, 48px)',
+        }}
+      >
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          {/* Sticky heading container */}
+          <div
+            className="hwt-sticky-heading"
+            style={{
+              position: 'sticky',
+              top: 'calc(50vh - 3rem)',
+              zIndex: 1,
+              background: '#ffffff',
+              paddingBottom: 48,
+            }}
+          >
+            <h2
               style={{
-                position: 'relative',
-                borderRadius: 12,
-                overflow: 'hidden',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+                fontWeight: 700,
+                color: '#111827',
+                margin: 0,
+                textTransform: 'uppercase',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
               }}
             >
-              {/* Card image */}
-              <div style={{ position: 'relative', height: '300px', width: '100%' }}>
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-                {/* Gradient overlay */}
+              HOW WE THINK
+            </h2>
+          </div>
+
+          {/* Cards scroll over the heading */}
+          <div
+            className="hwt-cards-grid"
+            style={{ position: 'relative', zIndex: 2 }}
+          >
+            {aiCapabilities.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  position: 'relative',
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                }}
+              >
+                {/* Card image */}
+                <div style={{ position: 'relative', height: '230px', width: '100%' }}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                  {/* Gradient overlay */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
+                    }}
+                  />
+                </div>
+                {/* Card text */}
                 <div
                   style={{
                     position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
-                  }}
-                />
-              </div>
-              {/* Card text */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '24px',
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: 'clamp(1.1rem, 1.5vw, 1.3rem)',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    marginBottom: 8,
-                    lineHeight: 1.3,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '24px',
                   }}
                 >
-                  {item.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: 'clamp(0.9rem, 1.1vw, 1rem)',
-                    color: 'rgba(255,255,255,0.9)',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {item.description}
-                </p>
+                  <h3
+                    style={{
+                      fontSize: 'clamp(1.1rem, 1.5vw, 1.3rem)',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      marginBottom: 8,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 'clamp(0.9rem, 1.1vw, 1rem)',
+                      color: 'rgba(255,255,255,0.9)',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {item.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -1284,7 +1348,7 @@ function WhiteFooter() {
             marginBottom: 24,
           }}>
             <img
-              src="/r2-logo.png"
+              src="/r2-logo.webp"
               alt="R² AI"
               style={{
                 height: 'clamp(50px, 8vw, 70px)',
@@ -1320,7 +1384,7 @@ function WhiteFooter() {
               width: '100%',
               maxWidth: '400px',
               height: '177px',
-              margin: '0 auto',
+              margin: '0',
               borderRadius: '8px',
               backgroundColor: 'white',
               display: 'block',

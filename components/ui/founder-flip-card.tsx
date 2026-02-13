@@ -40,28 +40,37 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
           .founder-description-text { font-size: 0.9375rem !important; line-height: 1.7 !important; }
         }
       `}} />
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+    {/* Perspective parent - plain div with no transforms */}
+    <div
       style={{
         perspective: '1000px',
         width: '100%',
         height: '100%',
       }}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-      onClick={() => setIsFlipped(!isFlipped)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setIsFlipped(!isFlipped);
-        }
-      }}
-      tabIndex={0}
-      role="button"
-      aria-label={`${name} - ${role}. Click or hover to see more information.`}
     >
+      {/* Animation wrapper - separate from perspective to fix Safari backface-visibility */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          width: '100%',
+          height: '100%',
+          touchAction: 'pan-y', // Allow vertical page scrolling on mobile
+        }}
+        onMouseEnter={() => setIsFlipped(true)}
+        onMouseLeave={() => setIsFlipped(false)}
+        onClick={() => setIsFlipped(!isFlipped)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsFlipped(!isFlipped);
+          }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label={`${name} - ${role}. Click or hover to see more information.`}
+      >
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
@@ -316,6 +325,7 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
         </div>
       </motion.div>
     </motion.div>
+    </div>
     </>
   )
 }

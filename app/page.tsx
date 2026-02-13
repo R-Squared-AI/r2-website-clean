@@ -664,7 +664,10 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false); // NEW: delayed ready state for smooth transition
+  const [showSkeleton, setShowSkeleton] = useState(false); // NEW: control skeleton visibility independently
   const containerRef = useRef<HTMLDivElement>(null);
+  const preloadIframeRef = useRef<HTMLIFrameElement>(null);
 
   // Detect mobile after mount
   useEffect(() => {
@@ -675,10 +678,51 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Reset hover state and iframe loaded state when expanding/collapsing
+  // NEW: Preload iframe off-screen on desktop to eliminate network delay
+  useEffect(() => {
+    if (!mounted || isMobile) return;
+
+    // Give the page a moment to settle before preloading
+    const preloadTimer = setTimeout(() => {
+      if (preloadIframeRef.current && !iframeLoaded) {
+        // Iframe is already in DOM (see JSX below), just needs to trigger load
+        // The onLoad handler will set iframeLoaded to true
+      }
+    }, 1000);
+
+    return () => clearTimeout(preloadTimer);
+  }, [mounted, isMobile, iframeLoaded]);
+
+  // NEW: Smooth transition sequence when iframe finishes loading
+  useEffect(() => {
+    if (!iframeLoaded || !isExpanded) return;
+
+    // Wait 350ms after onLoad for Beehiiv JS to finish rendering
+    const readyTimer = setTimeout(() => {
+      setIframeReady(true);
+
+      // Start fading out skeleton 150ms before iframe is fully visible
+      // This creates a smooth crossfade with no gap
+      const skeletonTimer = setTimeout(() => {
+        setShowSkeleton(false);
+      }, 150);
+
+      return () => clearTimeout(skeletonTimer);
+    }, 350);
+
+    return () => clearTimeout(readyTimer);
+  }, [iframeLoaded, isExpanded]);
+
+  // Reset all states when collapsing
   useEffect(() => {
     setIsHovered(false);
-    if (!isExpanded) setIframeLoaded(false);
+    if (!isExpanded) {
+      setIframeReady(false);
+      setShowSkeleton(false);
+    } else {
+      // Show skeleton immediately when expanding
+      setShowSkeleton(true);
+    }
   }, [isExpanded]);
 
   // Click outside to collapse
@@ -767,22 +811,21 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
           Join Squared Away
         </button>
 
-        {/* Desktop form — absolutely positioned, overlays without affecting layout */}
-        {!isMobile && isExpanded && (
+        {/* Desktop preload iframe — always mounted on desktop, positioned based on expanded state */}
+        {mounted && !isMobile && (
           <div
             style={{
               position: 'absolute',
-              top: 0,
-              left: 0,
+              top: isExpanded ? 0 : '-9999px',
+              left: isExpanded ? 0 : '-9999px',
               zIndex: 10,
-              transformOrigin: 'top left',
-              opacity: iframeLoaded ? 1 : 0,
-              transform: iframeLoaded ? 'scale(1)' : 'scale(0.98)',
-              transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
-              pointerEvents: 'auto',
+              opacity: iframeReady ? 1 : 0,
+              transition: 'opacity 0.5s ease-out',
+              pointerEvents: isExpanded && iframeReady ? 'auto' : 'none',
             }}
           >
             <iframe
+              ref={preloadIframeRef}
               src="https://subscribe-forms.beehiiv.com/f50f3b9c-7e15-47ab-bcad-7e9159ca428b"
               className="beehiiv-embed"
               data-test-id="beehiiv-embed"
@@ -801,8 +844,8 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
           </div>
         )}
 
-        {/* Desktop skeleton — visible while iframe loads */}
-        {!isMobile && isExpanded && !iframeLoaded && (
+        {/* Desktop skeleton — visible while iframe loads, with smooth fade-out */}
+        {!isMobile && isExpanded && showSkeleton && (
           <div
             style={{
               position: 'absolute',
@@ -811,19 +854,56 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
               width: '550px',
               height: '280px',
               borderRadius: '8px',
-              background: 'linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)',
-              backgroundSize: '200% 100%',
-              animation: 'shimmer 1.5s infinite',
+              background: '#ffffff',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
               zIndex: 9,
-              opacity: 1,
-              transition: 'opacity 0.3s ease-out',
+              opacity: iframeReady ? 0 : 1,
+              transition: 'opacity 0.4s ease-out',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '32px',
             }}
-          />
+          >
+            {/* Subtle loading indicator instead of shimmer */}
+            <div style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+            }}>
+              <div style={{
+                width: '60%',
+                height: '12px',
+                borderRadius: '6px',
+                background: 'linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+              }} />
+              <div style={{
+                width: '100%',
+                height: '44px',
+                borderRadius: '6px',
+                background: 'linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+              }} />
+              <div style={{
+                width: '40%',
+                height: '36px',
+                borderRadius: '6px',
+                background: 'linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s infinite',
+              }} />
+            </div>
+          </div>
         )}
       </div>
 
       {/* Shimmer animation for skeleton */}
-      {isExpanded && !iframeLoaded && (
+      {showSkeleton && (
         <style dangerouslySetInnerHTML={{__html: `
           @keyframes shimmer {
             0% { background-position: 200% 0; }

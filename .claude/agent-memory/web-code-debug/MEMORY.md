@@ -57,6 +57,28 @@
 - **Fix:** Add `className="carousel-container"` to both the outer card div and the image panel div, plus `isolation: 'isolate'` on the outer card to force a proper stacking context
 - **Pattern:** Any component that needs `overflow: hidden` to clip content MUST use the `carousel-container` class (or another exception class from globals.css) -- do NOT rely solely on inline styles
 
+## ExpandableEmailSignup Layout Shift (2026-02-13)
+- **Root cause:** Container used `minWidth: isExpanded ? '550px' : undefined` and `minHeight: isExpanded ? '280px' : undefined`, causing the container to grow from button size (~200×50px) to form size (550×280px) when clicked
+- **Layout impact:** Container is `position: relative` in normal document flow, so size change forced surrounding flex items (the "Get In Touch" button and hero text) to reflow, creating the "shove up" glitch
+- **Fix:** Remove all `minWidth`/`minHeight` from container. Let button remain in normal flow to preserve space. Form overlays via `position: absolute` without affecting layout.
+- **Key principle:** For expand-in-place transitions, the container must maintain its initial size. Expanded content should overlay absolutely positioned outside the container's layout box to prevent ANY layout shift.
+- **Pattern:** Button stays in flow (opacity: 0 when expanded), form/skeleton use `position: absolute; top: 0; left: 0` to overlay exactly on button position
+
+## ExpandableEmailSignup iframe Loading Glitch (2026-02-13)
+- **Root causes identified:** Five distinct issues causing "gray box, glitchy" appearance
+  1. **Gray box:** Beehiiv iframe document has white/gray background that shows before form content renders (setting `backgroundColor: 'transparent'` on iframe element doesn't affect the loaded document)
+  2. **Skeleton → iframe gap:** Skeleton instantly unmounts when `iframeLoaded = true`, but iframe takes 0.4s to fade in, creating a visible flash
+  3. **iframe onLoad too early:** Fires when HTML loads, but Beehiiv's heavy JavaScript (Stimulus, Flatpickr, PerimeterX, GTM) renders form content 100-500ms later
+  4. **No preloading:** iframe created only on click, so entire network round-trip (DNS, TCP, fetch) happens while user watches
+  5. **Scale transform:** `scale(0.98)` → `scale(1)` creates "pop-in" effect that draws attention to the transition
+- **Comprehensive fix applied:**
+  1. Preload iframe off-screen on page load (position: absolute, left: -9999px) — eliminates network delay
+  2. Add 350ms delay after onLoad before showing iframe — lets Beehiiv JS finish rendering
+  3. Smooth crossfade: skeleton fades out with 0.4s transition, iframe starts fading in 150ms before skeleton finishes — no gap
+  4. Changed skeleton from shimmer to white background with subtle loading bars — matches Beehiiv form background
+  5. Removed scale transform — only opacity fade for seamless appearance
+- **Key pattern:** For third-party iframe embeds with JavaScript content, `onLoad` is NOT sufficient. Add 300-500ms delay + crossfade skeleton for smooth UX.
+
 ## See Also
 - `/Docs/LESSONS.md` - 17 documented lessons with code examples
 - `CLAUDE.md` at project root - authoritative project rules

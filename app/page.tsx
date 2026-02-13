@@ -279,11 +279,10 @@ function CombinedSkylineHowWeThinkSection() {
 
         {/* Cards container — normal flow, scrolls over heading */}
         <div
-          data-header-theme="light"
+          data-header-theme="dark"
           style={{
             position: 'relative',
             zIndex: 4,
-            background: '#ffffff',
             padding: 'clamp(300px, 50vh, 600px) clamp(24px, 4vw, 48px) 120px',
             paddingLeft: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-left))',
             paddingRight: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-right))',

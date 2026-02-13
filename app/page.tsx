@@ -8,11 +8,12 @@ import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 
 // Import existing UI components
-import { Particles } from '@/components/ui/particles';
+const Particles = dynamic(() => import('@/components/ui/particles').then(mod => ({ default: mod.Particles })), { ssr: false });
+const IconCloud = dynamic(() => import('@/components/ui/icon-cloud').then(mod => ({ default: mod.IconCloud })), { ssr: false });
 import { NeumorphicButton } from '@/components/ui/neumorphic-button';
-import { IconCloud } from '@/components/ui/icon-cloud';
 import { BentoGrid, BentoCard } from '@/components/ui/bento-grid';
 import { DiagonalCarousel } from '@/components/ui/diagonal-carousel';
 import { FounderFlipCard } from '@/components/ui/founder-flip-card';
@@ -245,32 +246,34 @@ function CombinedSkylineHowWeThinkSection() {
           </h2>
         </div>
 
-        {/* "HOW WE THINK" heading — sticky, plain white text */}
-        <div
-          className="combined-hwt-sticky"
-          data-header-theme="dark"
-          style={{
-            position: 'sticky',
-            top: 'calc(50vh - 3rem)',
-            zIndex: 3,
-            textAlign: 'center',
-            padding: '24px 16px',
-          }}
-        >
-          <h2
+        {/* HOW WE THINK heading wrapper — constrains how long the heading stays sticky */}
+        <div style={{ height: '100vh', position: 'relative', zIndex: 3 }}>
+          <div
+            className="combined-hwt-sticky"
+            data-header-theme="dark"
             style={{
-              fontSize: 'clamp(2rem, 6vw, 5rem)',
-              fontWeight: 700,
-              color: '#ffffff',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
-              textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
-              margin: 0,
+              position: 'sticky',
+              top: 'calc(50vh - 3rem)',
+              zIndex: 3,
+              textAlign: 'center',
+              padding: '24px 16px',
             }}
           >
-            HOW WE THINK
-          </h2>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
+                margin: 0,
+              }}
+            >
+              HOW WE THINK
+            </h2>
+          </div>
         </div>
 
         {/* Cards container — normal flow, scrolls over heading */}
@@ -279,6 +282,7 @@ function CombinedSkylineHowWeThinkSection() {
           style={{
             position: 'relative',
             zIndex: 4,
+            background: '#ffffff',
             padding: 'clamp(300px, 50vh, 600px) clamp(24px, 4vw, 48px) 120px',
             paddingLeft: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-left))',
             paddingRight: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-right))',

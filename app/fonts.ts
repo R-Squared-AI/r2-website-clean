@@ -5,7 +5,7 @@ import { Roboto_Mono, Inter } from 'next/font/google';
 export const r2Font = localFont({
   src: './R2Font.ttf',
   variable: '--font-r2',
-  display: 'swap',
+  display: 'block',
   weight: '400',
 });
 
@@ -13,7 +13,7 @@ export const r2Font = localFont({
 export const r2FontBold = localFont({
   src: './R2FontBold.ttf',
   variable: '--font-r2-bold',
-  display: 'swap',
+  display: 'block',
   weight: '700',
 });
 
@@ -21,7 +21,7 @@ export const r2FontBold = localFont({
 export const robotoMono = Roboto_Mono({
   subsets: ['latin'],
   variable: '--font-roboto-mono',
-  display: 'swap',
+  display: 'block',
   weight: ['400', '500', '700'],
 });
 
@@ -29,6 +29,6 @@ export const robotoMono = Roboto_Mono({
 export const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
-  display: 'swap',
+  display: 'block',
   weight: ['400', '500', '600', '700'],
 });

@@ -374,6 +374,10 @@ export default function RootLayout({
         {/* Theme color for mobile browsers */}
         <meta name="theme-color" content="#0A0A0A" />
 
+        {/* Preload critical fonts */}
+        <link rel="preload" href="/R2Font.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
+        <link rel="preload" href="/R2FontBold.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
+
         {/* Apple-specific meta tags for iMessage/Safari link previews */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

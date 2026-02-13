@@ -132,6 +132,27 @@ function SimpleHeroSection() {
 // Combined Skyline + How We Think Section
 function CombinedSkylineHowWeThinkSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hwtProgress, setHwtProgress] = useState(0); // 0 = below image, 1 = centered
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const skylineTextRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll to animate "HOW WE THINK" heading from below to center
+  useEffect(() => {
+    const onScroll = () => {
+      const textEl = skylineTextRef.current;
+      if (!textEl) return;
+      const textRect = textEl.getBoundingClientRect();
+      // Heading starts entering when skyline text bottom is at ~60% of viewport
+      // Heading fully centered when skyline text is fully above viewport
+      const start = window.innerHeight * 0.6;
+      const end = 0;
+      const progress = Math.min(1, Math.max(0, (start - textRect.bottom) / (start - end)));
+      setHwtProgress(progress);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <>
@@ -198,7 +219,7 @@ function CombinedSkylineHowWeThinkSection() {
             }}
           />
 
-          {/* "HOW WE THINK" heading — inside the sticky image so it scrolls out with it */}
+          {/* "HOW WE THINK" heading — inside sticky image, scroll-animated from below to center */}
           <div
             className="combined-hwt-sticky"
             data-header-theme="dark"
@@ -207,7 +228,10 @@ function CombinedSkylineHowWeThinkSection() {
               top: '50%',
               left: 0,
               right: 0,
-              transform: 'translateY(-50%)',
+              // Starts at translateY(50%) (below center), ends at translateY(-50%) (centered)
+              // The 100% range: -50% is centered, +50% is off-screen below center
+              transform: `translateY(${-50 + (1 - hwtProgress) * 100}%)`,
+              opacity: hwtProgress,
               zIndex: 2,
               textAlign: 'center',
               padding: '24px 16px',
@@ -233,6 +257,7 @@ function CombinedSkylineHowWeThinkSection() {
 
         {/* Skyline TEXT — normal flow, overlaps image via negative margin, scrolls out naturally */}
         <div
+          ref={skylineTextRef}
           className="combined-skyline-text"
           data-header-theme="dark"
           style={{

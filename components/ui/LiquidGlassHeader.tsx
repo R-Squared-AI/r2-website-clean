@@ -2046,11 +2046,11 @@ export function LiquidGlassHeader() {
                                 if (element) {
                                   const offsets: Record<string, number> = {
                                     'about': 60,
-                                    'services': 100,
-                                    'industries': 80,
-                                    'edge': 100,
-                                    'process': 100,
-                                    'team': 40,
+                                    'services': -70,
+                                    'industries': 0,
+                                    'edge': -45,
+                                    'process': -90,
+                                    'team': 70,
                                   };
                                   const headerOffset = offsets[hash] ?? 80;
                                   const elementPosition = element.getBoundingClientRect().top + window.scrollY;
@@ -2392,12 +2392,12 @@ export function LiquidGlassHeader() {
                             const element = document.getElementById(hash);
                             if (element) {
                               const offsets: Record<string, number> = {
-                                'about': 60,
-                                'services': 100,
-                                'industries': 80,
-                                'edge': 100,
-                                'process': 100,
-                                'team': 40,
+                                'about': 30,
+                                'services': -100,
+                                'industries': -80,
+                                'edge': -80,
+                                'process': -120,
+                                'team': 30,
                               };
                               const headerOffset = offsets[hash] ?? 80;
                               const elementPosition = element.getBoundingClientRect().top + window.scrollY;

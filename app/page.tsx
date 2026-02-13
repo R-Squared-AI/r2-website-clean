@@ -198,12 +198,22 @@ function CombinedSkylineHowWeThinkSection() {
             margin-right: 0 !important;
             transform: none !important;
             margin-bottom: 48px !important;
+            height: 280px !important;
           }
           .hwt-card-zigzag:last-child { margin-bottom: 0 !important; }
-          .combined-skyline-section { height: 300vh !important; }
+          .combined-skyline-section { height: 400vh !important; }
           .combined-skyline-img-sticky { position: sticky !important; top: 0 !important; height: 100vh !important; }
           .combined-skyline-text { padding: 0 24px !important; }
-          .hwt-cards-container { padding-top: clamp(150px, 30vh, 250px) !important; }
+          .hwt-cards-container { padding-top: 100px !important; }
+          .combined-hwt-sticky {
+            position: sticky !important;
+            top: 80px !important;
+            transform: none !important;
+            opacity: 1 !important;
+            text-align: center;
+            z-index: 3;
+            pointer-events: none;
+          }
         }
       `}} />
       <section
@@ -1454,6 +1464,7 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
     <div>
       <div
         ref={scrollRef}
+        className="wwd-mobile-scroll"
         style={{
           display: 'flex',
           gap: '16px',
@@ -1470,11 +1481,10 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
         {tiles.map((tile, idx) => (
           <div
             key={idx}
-            className="wwd-mobile-scroll"
             style={{
               flexShrink: 0,
               width: 'calc(100vw - 64px)',
-              height: '320px',
+              height: '450px',
               borderRadius: '12px',
               overflow: 'hidden',
               position: 'relative',

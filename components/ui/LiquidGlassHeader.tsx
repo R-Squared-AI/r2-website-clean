@@ -2044,7 +2044,15 @@ export function LiquidGlassHeader() {
                                 const hash = link.href.split('#')[1];
                                 const element = document.getElementById(hash);
                                 if (element) {
-                                  const headerOffset = (hash === 'edge' || hash === 'process') ? -100 : (hash === 'services' || hash === 'industries') ? -60 : 80;
+                                  const offsets: Record<string, number> = {
+                                    'about': 60,
+                                    'services': 100,
+                                    'industries': 80,
+                                    'edge': 100,
+                                    'process': 100,
+                                    'team': 40,
+                                  };
+                                  const headerOffset = offsets[hash] ?? 80;
                                   const elementPosition = element.getBoundingClientRect().top + window.scrollY;
                                   const targetPosition = elementPosition - headerOffset;
 
@@ -2383,7 +2391,15 @@ export function LiquidGlassHeader() {
                             const hash = link.href.split('#')[1];
                             const element = document.getElementById(hash);
                             if (element) {
-                              const headerOffset = (hash === 'edge' || hash === 'process') ? -100 : (hash === 'services' || hash === 'industries') ? -60 : 80;
+                              const offsets: Record<string, number> = {
+                                'about': 60,
+                                'services': 100,
+                                'industries': 80,
+                                'edge': 100,
+                                'process': 100,
+                                'team': 40,
+                              };
+                              const headerOffset = offsets[hash] ?? 80;
                               const elementPosition = element.getBoundingClientRect().top + window.scrollY;
                               const targetPosition = elementPosition - headerOffset;
 

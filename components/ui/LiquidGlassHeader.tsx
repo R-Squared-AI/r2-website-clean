@@ -600,21 +600,8 @@ export function LiquidGlassHeader() {
       const centerX = pillRect.left + pillRect.width / 2;
       const centerY = pillRect.top + pillRect.height / 2; // This is around 51px from top
 
-      // FIRST: Check sections by position (more reliable than elementFromPoint)
-      // The logo is at centerY (~51px from top), check which section contains that Y position
-      for (const section of sections) {
-        const rect = section.getBoundingClientRect();
-        // Check if logo Y is within section bounds (with tolerance)
-        if (centerY >= rect.top - 150 && centerY <= rect.bottom + 150) {
-          const theme = section.getAttribute('data-header-theme') as 'light' | 'dark' | null;
-          if (theme === 'light' || theme === 'dark') {
-            setHeaderTheme(theme);
-            return;
-          }
-        }
-      }
-      
-      // SECOND: Sample the actual background color behind the logo using elementFromPoint
+      // PRIMARY: Use elementFromPoint to detect the actual visible element at the header position.
+      // This is more reliable than section bounds because sections overlap via negative margins.
       // Check what's at the logo position by temporarily disabling pointer events on header
       const header = document.querySelector('header');
       const originalPointerEvents = header?.style.pointerEvents;
@@ -813,7 +800,7 @@ export function LiquidGlassHeader() {
         for (const child of mainChildren) {
           const rect = child.getBoundingClientRect();
           // Check if logo is within or near this child element
-          if (centerY >= rect.top - 100 && centerY <= rect.bottom + 100 && 
+          if (centerY >= rect.top - 20 && centerY <= rect.bottom + 20 &&
               centerX >= rect.left - 200 && centerX <= rect.right + 200) {
             // First check if child has data-header-theme
             const childTheme = child.getAttribute('data-header-theme');
@@ -849,15 +836,14 @@ export function LiquidGlassHeader() {
         }
       }
 
-      // Final fallback: check all sections to see which one's viewport position contains the logo
-      // The logo is fixed at the top, so check which section is currently visible at that Y position
+      // FALLBACK: check all sections by bounds with tight tolerance
       let nextTheme: 'light' | 'dark' = 'light';
       let bestMatch: { section: HTMLElement; distance: number } | null = null;
 
       for (const section of sections) {
         const rect = section.getBoundingClientRect();
-        // Check if logo Y position is within this section's vertical bounds (with some tolerance)
-        if (centerY >= rect.top - 150 && centerY <= rect.bottom + 150) {
+        // Tight tolerance (±20px) to avoid matching overlapping sections via negative margins
+        if (centerY >= rect.top - 20 && centerY <= rect.bottom + 20) {
           // Check horizontal overlap (with wide tolerance since logo is centered)
           if (centerX >= rect.left - 500 && centerX <= rect.right + 500) {
             // Calculate how close the logo is to this section

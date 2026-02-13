@@ -205,7 +205,7 @@ export function FounderFlipCard({ name, role, image, description, linkedInUrl, i
             padding: 'clamp(16px, 3vw, 32px)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             alignItems: 'center',
           }}
         >
@@ -255,6 +255,7 @@ export function FounderFlipCard({ name, role, image, description, linkedInUrl, i
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'center',
               width: '100%',
             }}
           >

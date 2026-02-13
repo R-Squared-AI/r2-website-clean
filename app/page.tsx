@@ -135,9 +135,9 @@ function CombinedSkylineHowWeThinkSection() {
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `
-        .hwt-card-zigzag { width: 50%; max-width: 600px; }
-        .hwt-card-zigzag:nth-child(odd) { margin-left: clamp(24px, 5vw, 80px); margin-right: auto; transform: rotate(-2deg); }
-        .hwt-card-zigzag:nth-child(even) { margin-left: auto; margin-right: clamp(24px, 5vw, 80px); transform: rotate(2deg); }
+        .hwt-card-zigzag { width: 42%; max-width: 500px; }
+        .hwt-card-zigzag:nth-child(odd) { margin-left: clamp(24px, 5vw, 80px); margin-right: auto; transform: rotate(-3.5deg); }
+        .hwt-card-zigzag:nth-child(even) { margin-left: auto; margin-right: clamp(24px, 5vw, 80px); transform: rotate(3.5deg); }
         .combined-skyline-mobile-only { display: none; }
         .combined-skyline-desktop-only { display: block; }
         @media (max-width: 768px) {
@@ -163,7 +163,7 @@ function CombinedSkylineHowWeThinkSection() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '800vh',
+          height: '550vh',
         }}
       >
         {/* Skyline IMAGE only — sticky fullscreen background */}
@@ -279,7 +279,7 @@ function CombinedSkylineHowWeThinkSection() {
           style={{
             position: 'relative',
             zIndex: 4,
-            padding: 'clamp(200px, 30vh, 400px) clamp(24px, 4vw, 48px) 120px',
+            padding: 'clamp(300px, 50vh, 600px) clamp(24px, 4vw, 48px) 120px',
             paddingLeft: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-left))',
             paddingRight: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-right))',
           }}
@@ -290,11 +290,11 @@ function CombinedSkylineHowWeThinkSection() {
               className="hwt-card-zigzag"
               style={{
                 position: 'relative',
-                height: '300px',
+                height: '380px',
                 borderRadius: 12,
                 overflow: 'hidden',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-                marginBottom: index < aiCapabilities.length - 1 ? 180 : 0,
+                marginBottom: index < aiCapabilities.length - 1 ? 200 : 0,
                 cursor: 'pointer',
                 touchAction: 'pan-y',
                 WebkitTapHighlightColor: 'transparent',
@@ -662,6 +662,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile after mount
@@ -673,9 +674,10 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Reset hover state when expanding/collapsing
+  // Reset hover state and iframe loaded state when expanding/collapsing
   useEffect(() => {
     setIsHovered(false);
+    if (!isExpanded) setIframeLoaded(false);
   }, [isExpanded]);
 
   // Click outside to collapse
@@ -724,14 +726,15 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
         style={{
           position: 'relative',
           display: 'inline-block',
+          minWidth: isExpanded && !isMobile ? '550px' : undefined,
+          minHeight: isExpanded && !isMobile ? '280px' : undefined,
         }}
       >
-        {/* Button - always in DOM to hold space */}
+        {/* Button — crossfades with form via absolute positioning */}
         <button
           onClick={() => !isExpanded && setIsExpanded(true)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          // Touch events for mobile - force reset on touch end
           onTouchStart={() => setIsHovered(true)}
           onTouchEnd={() => {
             setTimeout(() => setIsHovered(false), 200);
@@ -757,8 +760,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
             boxShadow: isHovered && !isExpanded
               ? 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)'
               : '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
-            transition: 'opacity 0.25s, transform 0.2s ease-out, box-shadow 0.2s ease-out, border 0.2s ease-out',
-            // iOS Safari tap optimization
+            transition: 'opacity 0.4s ease-out 0.05s, transform 0.2s ease-out, box-shadow 0.2s ease-out, border 0.2s ease-out',
             WebkitTapHighlightColor: 'transparent',
             touchAction: 'manipulation',
           }}
@@ -766,7 +768,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
           Join Squared Away
         </button>
 
-        {/* Desktop form - inline */}
+        {/* Desktop form — overlaid on button, crossfades in */}
         {!isMobile && isExpanded && (
           <div
             style={{
@@ -775,9 +777,9 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
               left: 0,
               zIndex: 10,
               transformOrigin: 'top left',
-              opacity: isExpanded ? 1 : 0,
-              transform: isExpanded ? 'scale(1)' : 'scale(0.95)',
-              transition: 'opacity 0.2s ease, transform 0.2s ease',
+              opacity: iframeLoaded ? 1 : 0,
+              transform: iframeLoaded ? 'scale(1)' : 'scale(0.98)',
+              transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
             }}
           >
             <iframe
@@ -786,6 +788,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
               data-test-id="beehiiv-embed"
               frameBorder="0"
               scrolling="no"
+              onLoad={() => setIframeLoaded(true)}
               style={{
                 width: '550px',
                 height: '280px',
@@ -797,7 +800,37 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
             />
           </div>
         )}
+
+        {/* Desktop skeleton — visible while iframe loads */}
+        {!isMobile && isExpanded && !iframeLoaded && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '550px',
+              height: '280px',
+              borderRadius: '8px',
+              background: 'linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%)',
+              backgroundSize: '200% 100%',
+              animation: 'shimmer 1.5s infinite',
+              zIndex: 9,
+              opacity: 1,
+              transition: 'opacity 0.3s ease-out',
+            }}
+          />
+        )}
       </div>
+
+      {/* Shimmer animation for skeleton */}
+      {isExpanded && !iframeLoaded && (
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+          }
+        `}} />
+      )}
 
       {/* Mobile form - Portal to escape BlurFade transform */}
       {mounted && isMobile && isExpanded && createPortal(
@@ -1320,7 +1353,7 @@ function WhatWeDoAnimated() {
         position: 'relative',
         width: '100%',
         background: '#ffffff',
-        padding: 'clamp(140px, 18vh, 200px) clamp(24px, 4vw, 48px) clamp(120px, 18vh, 200px)',
+        padding: 'clamp(200px, 28vh, 320px) clamp(24px, 4vw, 48px) clamp(120px, 18vh, 200px)',
       }}
     >
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -1392,15 +1425,34 @@ function WhatWeDoAnimated() {
   );
 }
 
-// Simple Founders Section - just show the 3 cards
+// Simple Founders Section - just show the 3 cards with scroll-in animation
 function FoundersScrollSection() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const foundersContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // IntersectionObserver for scroll-in animation
+  useEffect(() => {
+    const el = foundersContainerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   const founders = [
@@ -1459,13 +1511,16 @@ function FoundersScrollSection() {
           THE FOUNDERS
         </h2>
 
-        <div style={{
-          display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row',
-          gap: isMobile ? '24px' : 'clamp(16px, 4vw, 48px)',
-          justifyContent: 'center',
-          alignItems: isMobile ? 'center' : 'stretch',
-        }}>
+        <div
+          ref={foundersContainerRef}
+          style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: isMobile ? '24px' : 'clamp(16px, 4vw, 48px)',
+            justifyContent: 'center',
+            alignItems: isMobile ? 'center' : 'stretch',
+          }}
+        >
           {founders.map((founder, index) => (
             <div
               key={founder.name}
@@ -1473,6 +1528,9 @@ function FoundersScrollSection() {
                 width: isMobile ? '100%' : 'clamp(280px, 30vw, 380px)',
                 maxWidth: isMobile ? '400px' : undefined,
                 height: isMobile ? '450px' : 'clamp(500px, 60vh, 650px)',
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? 'translateY(0)' : 'translateY(40px)',
+                transition: `opacity 0.6s ease-out ${index * 0.15}s, transform 0.6s ease-out ${index * 0.15}s`,
               }}
             >
               <FounderFlipCard

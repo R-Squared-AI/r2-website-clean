@@ -38,6 +38,7 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
           .desktop-only { display: none; }
           .mobile-only { display: block; }
           .founder-description-text { font-size: 0.9375rem !important; line-height: 1.7 !important; }
+          .founder-card-back { padding-top: 20px !important; }
         }
       `}} />
     {/* Perspective parent - plain div with no transforms */}
@@ -58,9 +59,9 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
           height: '100%',
           touchAction: 'pan-y', // Allow vertical page scrolling on mobile
         }}
-        onMouseEnter={() => setIsFlipped(true)}
-        onMouseLeave={() => setIsFlipped(false)}
-        onClick={() => setIsFlipped(!isFlipped)}
+        onMouseEnter={() => { if (!isMobile) setIsFlipped(true); }}
+        onMouseLeave={() => { if (!isMobile) setIsFlipped(false); }}
+        onClick={() => { if (isMobile) setIsFlipped(!isFlipped); }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -201,6 +202,7 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
 
         {/* Back of card */}
         <div
+          className="founder-card-back"
           style={{
             position: 'absolute',
             width: '100%',

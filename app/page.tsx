@@ -190,6 +190,7 @@ function CombinedSkylineHowWeThinkSection() {
         .hwt-card-zigzag { width: 42%; max-width: 500px; }
         .hwt-card-zigzag:nth-child(odd) { margin-left: clamp(24px, 5vw, 80px); margin-right: auto; transform: rotate(-3.5deg); }
         .hwt-card-zigzag:nth-child(even) { margin-left: auto; margin-right: clamp(24px, 5vw, 80px); transform: rotate(3.5deg); }
+        .hwt-mobile-heading { display: none; }
         @media (max-width: 768px) {
           .hwt-card-zigzag {
             width: 100% !important;
@@ -204,10 +205,9 @@ function CombinedSkylineHowWeThinkSection() {
           .combined-skyline-section { height: 400vh !important; }
           .combined-skyline-img-sticky { position: sticky !important; top: 0 !important; height: 100vh !important; }
           .combined-skyline-text { padding: 0 24px !important; }
-          .hwt-cards-container { padding-top: 100px !important; }
-          .combined-hwt-sticky {
-            text-align: center;
-          }
+          .hwt-cards-container { padding-top: 40px !important; }
+          .combined-hwt-sticky { display: none !important; }
+          .hwt-mobile-heading { display: block !important; }
         }
       `}} />
       <section
@@ -345,6 +345,26 @@ function CombinedSkylineHowWeThinkSection() {
             paddingRight: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-right))',
           }}
         >
+          {/* Mobile-only heading — scrolls naturally with cards */}
+          <div className="hwt-mobile-heading" style={{
+            textAlign: 'center',
+            padding: '0 16px 40px',
+            pointerEvents: 'none',
+          }}>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 8vw, 3rem)',
+              fontWeight: 700,
+              color: '#ffffff',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
+              margin: 0,
+            }}>
+              HOW WE THINK
+            </h2>
+          </div>
+
           {aiCapabilities.map((item, index) => (
             <div
               key={index}
@@ -1481,6 +1501,8 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
           paddingBottom: '8px',
+          paddingLeft: '32px',
+          paddingRight: '32px',
         }}
       >
         <style dangerouslySetInnerHTML={{__html: `
@@ -1500,7 +1522,7 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
                 borderRadius: '12px',
                 overflow: 'hidden',
                 position: 'relative',
-                scrollSnapAlign: 'start',
+                scrollSnapAlign: 'center',
                 touchAction: 'pan-x pan-y',
                 cursor: 'pointer',
               }}

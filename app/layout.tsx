@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ConditionalHeader } from "@/components/layout/ConditionalHeader";
+import { LoadingScreen } from "@/components/ui/loading-screen";
 import { r2Font, r2FontBold, robotoMono, inter } from "./fonts";
 // Note: Lenis smooth scroll disabled - it breaks CSS position:sticky
 // import { SmoothScrollProvider } from "@/components/ui/smooth-scroll-provider";
@@ -413,6 +414,9 @@ export default function RootLayout({
       <body
         className={`${r2Font.variable} ${r2FontBold.variable} ${robotoMono.variable} ${inter.variable}`}
       >
+        {/* Loading splash screen - renders first to prevent flash of unstyled content */}
+        <LoadingScreen />
+
         {/* Beehiiv Attribution Tracking */}
         <Script
           src="https://subscribe-forms.beehiiv.com/attribution.js"

@@ -154,7 +154,7 @@ function CombinedSkylineHowWeThinkSection() {
           .combined-skyline-section { height: auto !important; }
           .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
           .combined-skyline-text { margin-top: 0 !important; margin-bottom: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
-          .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 32px !important; }
+          .combined-hwt-sticky { position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; }
           .combined-skyline-mobile-only { display: block; }
           .combined-skyline-desktop-only { display: none; }
         }
@@ -197,6 +197,38 @@ function CombinedSkylineHowWeThinkSection() {
               background: 'rgba(0,0,0,0.5)',
             }}
           />
+
+          {/* "HOW WE THINK" heading — inside the sticky image so it scrolls out with it */}
+          <div
+            className="combined-hwt-sticky"
+            data-header-theme="dark"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: 0,
+              right: 0,
+              transform: 'translateY(-50%)',
+              zIndex: 2,
+              textAlign: 'center',
+              padding: '24px 16px',
+              pointerEvents: 'none',
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
+                margin: 0,
+              }}
+            >
+              HOW WE THINK
+            </h2>
+          </div>
         </div>
 
         {/* Skyline TEXT — normal flow, overlaps image via negative margin, scrolls out naturally */}
@@ -243,34 +275,6 @@ function CombinedSkylineHowWeThinkSection() {
             }}
           >
             WHAT YOUR SALES PROCESS LOOKS LIKE WITH R<sup style={{ fontSize: '0.6em' }}>2</sup>
-          </h2>
-        </div>
-
-        {/* "HOW WE THINK" heading — sticky, cards scroll over it at higher z-index */}
-        <div
-          className="combined-hwt-sticky"
-          data-header-theme="dark"
-          style={{
-            position: 'sticky',
-            top: 'calc(50vh - 3rem)',
-            zIndex: 3,
-            textAlign: 'center',
-            padding: '24px 16px',
-          }}
-        >
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 6vw, 5rem)',
-              fontWeight: 700,
-              color: '#ffffff',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
-              textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
-              margin: 0,
-            }}
-          >
-            HOW WE THINK
           </h2>
         </div>
 

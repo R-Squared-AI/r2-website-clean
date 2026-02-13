@@ -2045,7 +2045,7 @@ export function LiquidGlassHeader() {
                                 const element = document.getElementById(hash);
                                 if (element) {
                                   const offsets: Record<string, number> = {
-                                    'about': 60,
+                                    'about': -20,
                                     'services': -70,
                                     'industries': 0,
                                     'edge': -45,

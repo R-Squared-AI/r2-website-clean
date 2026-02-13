@@ -14,7 +14,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: true,
   viewportFit: 'cover', // Critical for iOS notch/Dynamic Island support
-  themeColor: '#ffffff',
+  themeColor: '#0A0A0A',
 };
 
 export const metadata: Metadata = {
@@ -372,7 +372,7 @@ export default function RootLayout({
         <meta httpEquiv="content-language" content="en-US" />
 
         {/* Theme color for mobile browsers */}
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#0A0A0A" />
 
         {/* Preload critical fonts */}
         <link rel="preload" href="/R2Font.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
@@ -380,7 +380,7 @@ export default function RootLayout({
 
         {/* Apple-specific meta tags for iMessage/Safari link previews */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="R² AI" />
 
         {/* Additional Open Graph tags for LinkedIn optimization */}

@@ -206,13 +206,7 @@ function CombinedSkylineHowWeThinkSection() {
           .combined-skyline-text { padding: 0 24px !important; }
           .hwt-cards-container { padding-top: 100px !important; }
           .combined-hwt-sticky {
-            position: sticky !important;
-            top: 80px !important;
-            transform: none !important;
-            opacity: 1 !important;
             text-align: center;
-            z-index: 3;
-            pointer-events: none;
           }
         }
       `}} />
@@ -973,7 +967,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
           className="mobile-beehiiv-portal"
           style={{
             position: 'fixed',
-            top: '60vh',
+            top: '140px',
             left: '50%',
             transform: 'translateX(-50%)',
             width: 'calc(100% - 32px)',
@@ -1441,10 +1435,11 @@ function AccordionColumn({
   );
 }
 
-// Mobile horizontal carousel for What We Do section
+// Mobile horizontal carousel for What We Do section — lightweight CSS-only cards
 function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description: string; expandedContent: string; image: string }[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [tappedIndex, setTappedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -1459,6 +1454,19 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
     el.addEventListener('scroll', onScroll, { passive: true });
     return () => el.removeEventListener('scroll', onScroll);
   }, [tiles.length]);
+
+  // Tap-outside-to-dismiss
+  useEffect(() => {
+    if (tappedIndex === null) return;
+    const handler = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.wwd-mobile-card')) {
+        setTappedIndex(null);
+      }
+    };
+    document.addEventListener('touchstart', handler, { passive: true });
+    return () => document.removeEventListener('touchstart', handler);
+  }, [tappedIndex]);
 
   return (
     <div>
@@ -1478,31 +1486,122 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
         <style dangerouslySetInnerHTML={{__html: `
           .wwd-mobile-scroll::-webkit-scrollbar { display: none; }
         `}} />
-        {tiles.map((tile, idx) => (
-          <div
-            key={idx}
-            style={{
-              flexShrink: 0,
-              width: 'calc(100vw - 64px)',
-              height: '450px',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              position: 'relative',
-              scrollSnapAlign: 'start',
-            }}
-          >
-            <BentoCard
-              name={tile.name}
-              className="h-full"
-              description={tile.description}
-              expandedContent={tile.expandedContent}
-              href="/solutions"
-              cta="Learn More"
-              Icon={() => <div />}
-              background={<img src={tile.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-            />
-          </div>
-        ))}
+        {tiles.map((tile, idx) => {
+          const isOpen = tappedIndex === idx;
+          return (
+            <div
+              key={idx}
+              className="wwd-mobile-card"
+              onClick={() => setTappedIndex(isOpen ? null : idx)}
+              style={{
+                flexShrink: 0,
+                width: 'calc(100vw - 64px)',
+                height: '500px',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                position: 'relative',
+                scrollSnapAlign: 'start',
+                touchAction: 'pan-x pan-y',
+                cursor: 'pointer',
+              }}
+            >
+              {/* Background image */}
+              <img
+                src={tile.image}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+              {/* Bottom gradient — always visible */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '60%',
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.75) 100%)',
+                  pointerEvents: 'none',
+                }}
+              />
+              {/* Card title + description — always visible at bottom */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '24px',
+                  zIndex: 2,
+                }}
+              >
+                <h3 style={{
+                  color: '#fff',
+                  fontSize: '1.25rem',
+                  fontWeight: 700,
+                  fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                  marginBottom: '6px',
+                }}>
+                  {tile.name}
+                </h3>
+                <p style={{
+                  color: 'rgba(255,255,255,0.85)',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.5,
+                  fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                  margin: 0,
+                }}>
+                  {tile.description}
+                </p>
+              </div>
+              {/* Expanded overlay — CSS transition, no motion.div */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(2, 80, 130, 0.92)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '32px 24px',
+                  opacity: isOpen ? 1 : 0,
+                  transition: 'opacity 0.3s ease',
+                  pointerEvents: isOpen ? 'auto' : 'none',
+                  zIndex: 3,
+                }}
+              >
+                <h3 style={{
+                  color: '#fff',
+                  fontSize: '1.3rem',
+                  fontWeight: 700,
+                  fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                  marginBottom: '16px',
+                  textAlign: 'center',
+                }}>
+                  {tile.name}
+                </h3>
+                <p style={{
+                  color: 'rgba(255,255,255,0.9)',
+                  fontSize: '1rem',
+                  lineHeight: 1.7,
+                  fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                  textAlign: 'center',
+                  margin: 0,
+                }}>
+                  {tile.expandedContent}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
       {/* Progress dots */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>

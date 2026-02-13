@@ -71,7 +71,7 @@ function SimpleHeroSection() {
         position: 'relative',
         width: '100%',
         minHeight: '100vh',
-        background: '#0A0A0F',
+        background: '#ffffff',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -116,7 +116,7 @@ function SimpleHeroSection() {
           height="32"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="rgba(255, 255, 255, 0.6)"
+          stroke="rgba(0, 0, 0, 0.5)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -128,76 +128,285 @@ function SimpleHeroSection() {
   );
 }
 
-// Simple City Skyline Section - static image with overlay text
-function SimpleCitySkylineSection() {
+// Combined Skyline + How We Think Section
+function CombinedSkylineHowWeThinkSection() {
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
   return (
-    <section
-      data-header-theme="dark"
-      style={{
-        position: 'relative',
-        width: '100%',
-        minHeight: '60vh',
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      {/* Background image */}
-      <img
-        src="/images/city-skyline.webp"
-        alt="City Skyline"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-        }}
-      />
-      {/* Dark overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(0,0,0,0.5)',
-        }}
-      />
-      {/* Text content */}
-      <div
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hwt-card-zigzag { width: 65%; max-width: 500px; }
+        .hwt-card-zigzag:nth-child(1) { margin-left: 0; margin-right: auto; transform: rotate(-2deg); }
+        .hwt-card-zigzag:nth-child(2) { margin-left: auto; margin-right: 0; transform: rotate(2deg); }
+        .hwt-card-zigzag:nth-child(3) { margin-left: 0; margin-right: auto; transform: rotate(-1.5deg); }
+        .combined-skyline-mobile-only { display: none; }
+        .combined-skyline-desktop-only { display: block; }
+        @media (max-width: 768px) {
+          .hwt-card-zigzag { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; transform: none !important; }
+          .combined-skyline-section { height: auto !important; }
+          .combined-skyline-sticky { position: static !important; height: min(60vh, 500px) !important; }
+          .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 24px !important; }
+          .combined-skyline-mobile-only { display: block; }
+          .combined-skyline-desktop-only { display: none; }
+        }
+      `}} />
+      <section
+        className="combined-skyline-section"
         style={{
           position: 'relative',
-          zIndex: 1,
-          textAlign: 'center',
-          padding: '0 24px',
-          maxWidth: '1200px',
+          width: '100%',
+          height: '400vh',
         }}
       >
-        <p
+        {/* Skyline — sticky fullscreen background */}
+        <div
+          className="combined-skyline-sticky"
+          data-header-theme="dark"
           style={{
-            fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
-            fontWeight: 600,
-            color: 'rgba(255, 255, 255, 0.9)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            marginBottom: 16,
+            position: 'sticky',
+            top: 0,
+            height: '100vh',
+            width: '100%',
+            zIndex: 1,
+            overflow: 'hidden',
           }}
         >
-          From discovery to deployed agents in 6-8 weeks. Not slidewares. Working systems.
-        </p>
-        <h2
+          <img
+            src="/images/city-skyline.webp"
+            alt="City Skyline"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.5)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '0 24px',
+              zIndex: 1,
+            }}
+          >
+            <p
+              style={{
+                fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
+                fontWeight: 600,
+                color: 'rgba(255, 255, 255, 0.9)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                marginBottom: 16,
+                textAlign: 'center',
+              }}
+            >
+              From discovery to deployed agents in 6-8 weeks. Not slidewares. Working systems.
+            </p>
+            <h2
+              style={{
+                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                textAlign: 'center',
+                maxWidth: '1200px',
+              }}
+            >
+              WHAT YOUR SALES PROCESS LOOKS LIKE WITH R<sup style={{ fontSize: '0.6em' }}>2</sup>
+            </h2>
+          </div>
+        </div>
+
+        {/* "HOW WE THINK" heading — sticky */}
+        <div
+          className="combined-hwt-sticky"
           style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            fontWeight: 700,
-            color: '#ffffff',
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em',
+            position: 'sticky',
+            top: 'calc(50vh - 3rem)',
+            zIndex: 2,
+            textAlign: 'center',
+            padding: '24px 0',
           }}
         >
-          WHAT YOUR SALES PROCESS LOOKS LIKE WITH R<sup style={{ fontSize: '0.6em' }}>2</sup>
-        </h2>
-      </div>
-    </section>
+          <span
+            style={{
+              display: 'inline-block',
+              background: 'rgba(255,255,255,0.95)',
+              padding: '12px 32px',
+              borderRadius: 8,
+              fontSize: 'clamp(2rem, 5vw, 4rem)',
+              fontWeight: 700,
+              color: '#111827',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+            }}
+          >
+            HOW WE THINK
+          </span>
+        </div>
+
+        {/* Cards container — normal flow, scrolls over heading */}
+        <div
+          data-header-theme="light"
+          style={{
+            position: 'relative',
+            zIndex: 3,
+            padding: '40px clamp(24px, 4vw, 48px) 120px',
+            maxWidth: '900px',
+            margin: '0 auto',
+          }}
+        >
+          {aiCapabilities.map((item, index) => (
+            <div
+              key={index}
+              className="hwt-card-zigzag"
+              style={{
+                position: 'relative',
+                height: '280px',
+                borderRadius: 12,
+                overflow: 'hidden',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+                marginBottom: index < aiCapabilities.length - 1 ? 80 : 0,
+                cursor: 'pointer',
+                touchAction: 'pan-y',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
+              onTouchStart={() => setHoveredCard(hoveredCard === index ? null : index)}
+            >
+              {/* Card image */}
+              <img
+                src={item.image}
+                alt={item.title}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+              {/* Light gradient overlay (always visible) */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%)',
+                }}
+              />
+              {/* Dark hover overlay */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(2, 50, 100, 0.88)',
+                  opacity: hoveredCard === index ? 1 : 0,
+                  transition: 'opacity 0.3s ease',
+                }}
+              />
+              {/* Default content (title + hint) */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '24px',
+                  opacity: hoveredCard === index ? 0 : 1,
+                  transition: 'opacity 0.3s ease',
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 'clamp(1.2rem, 1.8vw, 1.4rem)',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    marginBottom: 6,
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className="combined-skyline-desktop-only"
+                  style={{
+                    fontSize: '0.85rem',
+                    color: 'rgba(255,255,255,0.7)',
+                    fontStyle: 'italic',
+                    margin: 0,
+                  }}
+                >
+                  Hover for more
+                </p>
+                <p
+                  className="combined-skyline-mobile-only"
+                  style={{
+                    fontSize: '0.85rem',
+                    color: 'rgba(255,255,255,0.7)',
+                    fontStyle: 'italic',
+                    margin: 0,
+                  }}
+                >
+                  Tap for more
+                </p>
+              </div>
+              {/* Hover/tap content (description) */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  padding: '24px',
+                  opacity: hoveredCard === index ? 1 : 0,
+                  transform: hoveredCard === index ? 'translateY(0)' : 'translateY(10px)',
+                  transition: 'opacity 0.3s ease, transform 0.3s ease',
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 'clamp(1.3rem, 2vw, 1.6rem)',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    marginBottom: 12,
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)',
+                    color: 'rgba(255,255,255,0.9)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -210,7 +419,7 @@ function SimpleIndustriesSection() {
       <style dangerouslySetInnerHTML={{__html: `
         .wws-layout {
           display: grid;
-          grid-template-columns: 1fr 1.5fr;
+          grid-template-columns: 1.2fr 1.5fr;
           gap: 48px;
           align-items: start;
         }
@@ -244,7 +453,7 @@ function SimpleIndustriesSection() {
             <div className="wws-heading">
               <h2
                 style={{
-                  fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+                  fontSize: 'clamp(2rem, 5vw, 4rem)',
                   fontWeight: 700,
                   color: '#111827',
                   margin: 0,
@@ -279,7 +488,7 @@ function SimpleIndustriesSection() {
                   }}
                 >
                   {/* Card image */}
-                  <div style={{ position: 'relative', height: '300px', width: '100%' }}>
+                  <div style={{ position: 'relative', height: '220px', width: '100%' }}>
                     <img
                       src={industry.image}
                       alt={industry.name}
@@ -352,136 +561,6 @@ function SimpleIndustriesSection() {
   );
 }
 
-// How We Think Section - Sticky heading, cards scroll over it
-function SimpleHowWeThinkSection() {
-  return (
-    <>
-      <style dangerouslySetInnerHTML={{__html: `
-        .hwt-cards-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-        }
-        @media (max-width: 768px) {
-          .hwt-cards-grid {
-            grid-template-columns: 1fr;
-          }
-          .hwt-sticky-heading {
-            position: static !important;
-            top: auto !important;
-          }
-        }
-      `}} />
-      <section
-        data-header-theme="light"
-        style={{
-          position: 'relative',
-          width: '100%',
-          background: '#ffffff',
-          padding: 'clamp(80px, 12vh, 120px) clamp(24px, 4vw, 48px)',
-        }}
-      >
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          {/* Sticky heading container */}
-          <div
-            className="hwt-sticky-heading"
-            style={{
-              position: 'sticky',
-              top: 'calc(50vh - 3rem)',
-              zIndex: 1,
-              background: '#ffffff',
-              paddingBottom: 48,
-            }}
-          >
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                fontWeight: 700,
-                color: '#111827',
-                margin: 0,
-                textTransform: 'uppercase',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.1,
-              }}
-            >
-              HOW WE THINK
-            </h2>
-          </div>
-
-          {/* Cards scroll over the heading */}
-          <div
-            className="hwt-cards-grid"
-            style={{ position: 'relative', zIndex: 2 }}
-          >
-            {aiCapabilities.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  position: 'relative',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                }}
-              >
-                {/* Card image */}
-                <div style={{ position: 'relative', height: '230px', width: '100%' }}>
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                  {/* Gradient overlay */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
-                    }}
-                  />
-                </div>
-                {/* Card text */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '24px',
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontSize: 'clamp(1.1rem, 1.5vw, 1.3rem)',
-                      fontWeight: 700,
-                      color: '#ffffff',
-                      marginBottom: 8,
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 'clamp(0.9rem, 1.1vw, 1rem)',
-                      color: 'rgba(255,255,255,0.9)',
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
 
 // Expandable Email Signup - button that animates into Beehiiv form
 function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded: boolean) => void }) {
@@ -574,21 +653,21 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
             alignItems: 'center',
             justifyContent: 'center',
             gap: 10,
-            background: '#ffffff',
+            background: '#032CC8',
             padding: '1em 1.8em',
             borderRadius: 10,
-            border: isHovered && !isExpanded ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
+            border: isHovered && !isExpanded ? '1px solid rgba(3, 44, 200, 0.4)' : '1px solid rgba(3, 44, 200, 0.3)',
             cursor: isExpanded ? 'default' : 'pointer',
             fontSize: '1rem',
             fontWeight: 600,
-            color: '#032CC8',
+            color: '#ffffff',
             fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
             pointerEvents: isExpanded ? 'none' : 'auto',
             opacity: isExpanded ? 0 : 1,
             transform: isHovered && !isExpanded ? 'translateY(8px)' : 'translateY(0)',
             boxShadow: isHovered && !isExpanded
-              ? 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)'
-              : '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
+              ? 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.3), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.15), -0.5px -0.5px 0px rgba(255, 255, 255, 0.3), 0.5px 0.5px 0px rgba(0, 0, 0, 0.2), 0px 12px 10px -10px rgba(0, 0, 0, 0.1)'
+              : '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)',
             transition: 'opacity 0.25s, transform 0.2s ease-out, box-shadow 0.2s ease-out',
             // iOS Safari tap optimization
             WebkitTapHighlightColor: 'transparent',
@@ -669,124 +748,153 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
 
 // Hero Content Component with mobile responsiveness
 function HeroContentSection() {
-  const [isMobile, setIsMobile] = useState(false);
   const [isFormExpanded, setIsFormExpanded] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
-    <div style={{
-      width: '100%',
-      maxWidth: '1400px',
-      margin: '0 auto',
-      padding: '0 clamp(24px, 4vw, 48px)',
-      position: 'relative',
-      display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      alignItems: 'center',
-      justifyContent: isMobile ? 'center' : 'space-between',
-      gap: isMobile ? '24px' : 'clamp(32px, 5vw, 60px)',
-      textAlign: isMobile ? 'center' : 'left',
-    }}>
-      {/* Left side - Text content */}
-      <div style={{ position: 'relative', zIndex: 1, flex: 1 }}>
-        <h1 style={{
-          fontSize: isMobile ? 'clamp(1.8rem, 8vw, 2.5rem)' : 'clamp(2.2rem, 5vw, 4rem)',
-          fontWeight: 700,
-          lineHeight: 1.15,
-          letterSpacing: '-0.02em',
-          marginBottom: 16,
-          color: '#ffffff',
-        }}>
-          AI that carries quota alongside your reps.
-        </h1>
-        <p style={{
-          fontSize: isMobile ? '0.95rem' : 'clamp(0.95rem, 1.4vw, 1.15rem)',
-          lineHeight: 1.6,
-          maxWidth: isMobile ? '100%' : 550,
-          marginTop: 0,
-          marginBottom: 24,
-          marginLeft: isMobile ? 'auto' : 0,
-          marginRight: isMobile ? 'auto' : 0,
-          color: '#e5e7eb',
-        }}>
-          Production-grade AI agents that listen to your sales activity, update your CRM, and surface pipeline opportunities and risk.
-        </p>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: '16px',
-          justifyContent: isMobile ? 'center' : 'flex-start',
-          flexWrap: 'wrap',
-        }}>
-            {!isFormExpanded && (
-              <a
-                key="get-in-touch-btn"
-                href="https://form.typeform.com/to/XPforiEB"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 10,
-                  background: '#ffffff',
-                  padding: '1em 1.8em',
-                  borderRadius: 10,
-                  border: '1px solid rgba(0, 0, 0, 0.08)',
-                  cursor: 'pointer',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  color: '#032CC8',
-                  fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                  textDecoration: 'none',
-                  boxShadow: '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
-                  transition: 'opacity 0.2s, transform 0.2s, box-shadow 0.2s',
-                  opacity: isFormExpanded ? 0 : 1,
-                  transform: 'scale(1)',
-                  // iOS Safari tap optimization
-                  WebkitTapHighlightColor: 'transparent',
-                  touchAction: 'manipulation',
-                }}
-                // CSS-based hover for smooth non-stuck animations
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(8px)';
-                  e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0px)';
-                  e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
-                }}
-                // Touch event handlers to force-reset animation on mobile
-                onTouchStart={(e) => {
-                  e.currentTarget.style.transform = 'translateY(8px)';
-                  e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
-                }}
-                onTouchEnd={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0px)';
-                  e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
-                }}
-                onTouchCancel={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0px)';
-                  e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
-                }}
-              >
-                Get In Touch
-              </a>
-            )}
-            <ExpandableEmailSignup onExpandChange={setIsFormExpanded} />
-          </div>
-      </div>
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hero-content-container {
+          flex-direction: row;
+          text-align: left;
+          gap: clamp(32px, 5vw, 60px);
+          justify-content: space-between;
+        }
+        .hero-text-content h1 {
+          font-size: clamp(2.2rem, 5vw, 4rem);
+        }
+        .hero-text-content p {
+          font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+          max-width: 550px;
+          margin-left: 0;
+          margin-right: 0;
+        }
+        .hero-cta-buttons {
+          justify-content: flex-start;
+        }
+        .hero-right-image {
+          display: block;
+        }
+        @media (max-width: 768px) {
+          .hero-content-container {
+            flex-direction: column;
+            text-align: center;
+            gap: 24px;
+            justify-content: center;
+          }
+          .hero-text-content h1 {
+            font-size: clamp(1.8rem, 8vw, 2.5rem);
+          }
+          .hero-text-content p {
+            font-size: 0.95rem;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            color: #4b5563;
+          }
+          .hero-cta-buttons {
+            justify-content: center;
+          }
+          .hero-right-image {
+            display: none;
+          }
+        }
+      `}} />
+      <div className="hero-content-container" style={{
+        width: '100%',
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '0 clamp(24px, 4vw, 48px)',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+      }}>
+        {/* Left side - Text content */}
+        <div className="hero-text-content" style={{ position: 'relative', zIndex: 1, flex: 1 }}>
+          <h1 style={{
+            fontWeight: 700,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
+            marginBottom: 16,
+            color: '#111827',
+          }}>
+            AI that carries quota alongside your reps.
+          </h1>
+          <p style={{
+            lineHeight: 1.6,
+            marginTop: 0,
+            marginBottom: 24,
+            color: '#6b7280',
+          }}>
+            Production-grade AI agents that listen to your sales activity, update your CRM, and surface pipeline opportunities and risk.
+          </p>
+          <div className="hero-cta-buttons" style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '16px',
+            flexWrap: 'wrap',
+          }}>
+              {!isFormExpanded && (
+                <a
+                  key="get-in-touch-btn"
+                  href="https://form.typeform.com/to/XPforiEB"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 10,
+                    background: '#032CC8',
+                    padding: '1em 1.8em',
+                    borderRadius: 10,
+                    border: '1px solid rgba(3, 44, 200, 0.3)',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    textDecoration: 'none',
+                    boxShadow: '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)',
+                    transition: 'opacity 0.2s, transform 0.2s, box-shadow 0.2s',
+                    opacity: isFormExpanded ? 0 : 1,
+                    transform: 'scale(1)',
+                    // iOS Safari tap optimization
+                    WebkitTapHighlightColor: 'transparent',
+                    touchAction: 'manipulation',
+                  }}
+                  // CSS-based hover for smooth non-stuck animations
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(8px)';
+                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.3), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.15), -0.5px -0.5px 0px rgba(255, 255, 255, 0.3), 0.5px 0.5px 0px rgba(0, 0, 0, 0.2), 0px 12px 10px -10px rgba(0, 0, 0, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0px)';
+                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)';
+                  }}
+                  // Touch event handlers to force-reset animation on mobile
+                  onTouchStart={(e) => {
+                    e.currentTarget.style.transform = 'translateY(8px)';
+                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.3), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.15), -0.5px -0.5px 0px rgba(255, 255, 255, 0.3), 0.5px 0.5px 0px rgba(0, 0, 0, 0.2), 0px 12px 10px -10px rgba(0, 0, 0, 0.1)';
+                  }}
+                  onTouchEnd={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0px)';
+                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)';
+                  }}
+                  onTouchCancel={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0px)';
+                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)';
+                  }}
+                >
+                  Get In Touch
+                </a>
+              )}
+              <ExpandableEmailSignup onExpandChange={setIsFormExpanded} />
+            </div>
+        </div>
 
-      {/* Right side - Vertical image - Hidden on mobile */}
-      {!isMobile && (
-        <div style={{
+        {/* Right side - Vertical image - Hidden on mobile via CSS */}
+        <div className="hero-right-image" style={{
           flex: '0 0 auto',
           width: 'clamp(220px, 25vw, 320px)',
           height: 'clamp(400px, 60vh, 550px)',
@@ -804,8 +912,8 @@ function HeroContentSection() {
             }}
           />
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -821,12 +929,9 @@ export default function HomePage() {
       {/* ===== SECTION 1: HERO ===== */}
       <SimpleHeroSection />
 
-      {/* ===== SECTION 2: CITY SKYLINE IMAGE ===== */}
-      <SimpleCitySkylineSection />
-
-      {/* ===== SECTION 3: HOW WE THINK ===== */}
+      {/* ===== SECTION 2+3: SKYLINE + HOW WE THINK ===== */}
       <div id="about">
-        <SimpleHowWeThinkSection />
+        <CombinedSkylineHowWeThinkSection />
       </div>
 
       {/* ===== SECTION 4: WHAT WE DO / SOLUTIONS CARDS ===== */}

@@ -57,29 +57,55 @@ const BentoCard = ({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
-      key={name}
-      className={cn(
-        "group relative flex flex-col justify-end overflow-hidden rounded-xl cursor-pointer",
-        "shadow-lg hover:shadow-2xl transition-all duration-300",
-        className
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={() => setIsHovered(true)}
-      onTouchEnd={(e) => {
-        // Allow touch to toggle on mobile
-        setTimeout(() => setIsHovered(false), 2000);
-      }}
-      onTouchCancel={() => setIsHovered(false)}
-      style={{
-        // Allow vertical page scroll even when touching cards
-        touchAction: 'pan-y',
-        // iOS tap optimization
-        WebkitTapHighlightColor: 'transparent',
-      }}
-      {...props}
-    >
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .bento-hint {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.7);
+          font-style: italic;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          margin-top: 8px;
+        }
+        .bento-hint svg {
+          animation: hintBounce 2s ease-in-out infinite;
+        }
+        @keyframes hintBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(3px); }
+        }
+        .bento-hint-desktop { display: flex; }
+        .bento-hint-mobile { display: none; }
+        @media (max-width: 768px) {
+          .bento-hint-desktop { display: none; }
+          .bento-hint-mobile { display: flex; }
+        }
+      `}} />
+      <div
+        key={name}
+        className={cn(
+          "group relative flex flex-col justify-end overflow-hidden rounded-xl cursor-pointer",
+          "shadow-lg hover:shadow-2xl transition-all duration-300",
+          className
+        )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={() => setIsHovered(true)}
+        onTouchEnd={(e) => {
+          // Allow touch to toggle on mobile
+          setTimeout(() => setIsHovered(false), 2000);
+        }}
+        onTouchCancel={() => setIsHovered(false)}
+        style={{
+          // Allow vertical page scroll even when touching cards
+          touchAction: 'pan-y',
+          // iOS tap optimization
+          WebkitTapHighlightColor: 'transparent',
+        }}
+        {...props}
+      >
       {/* Image Background */}
       {background && (
         <div className="absolute inset-0 z-0">
@@ -129,7 +155,7 @@ const BentoCard = ({
         </h3>
       </motion.div>
 
-      {/* Default Content - Title only at bottom */}
+      {/* Default Content - Title + hint at bottom */}
       <motion.div
         className="relative z-20 flex flex-col justify-end h-full"
         style={{ padding: 'clamp(20px, 4vw, 32px)' }}
@@ -146,6 +172,18 @@ const BentoCard = ({
         >
           {name}
         </h3>
+        <p className="bento-hint bento-hint-desktop">
+          <span>Hover for more</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </p>
+        <p className="bento-hint bento-hint-mobile">
+          <span>Tap for more</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </p>
       </motion.div>
 
       {/* Hover Content - Expanded details */}
@@ -186,7 +224,8 @@ const BentoCard = ({
           </p>
         )}
       </motion.div>
-    </div>
+      </div>
+    </>
   );
 }
 

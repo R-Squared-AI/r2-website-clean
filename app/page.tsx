@@ -157,11 +157,33 @@ function CombinedSkylineHowWeThinkSection() {
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `
+        /* Unified card hint styles with bounce animation */
+        .card-hint {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.7);
+          font-style: italic;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .card-hint svg {
+          animation: hintBounce 2s ease-in-out infinite;
+        }
+        @keyframes hintBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(3px); }
+        }
+        .card-hint-desktop { display: flex; }
+        .card-hint-mobile { display: none; }
+        @media (max-width: 768px) {
+          .card-hint-desktop { display: none; }
+          .card-hint-mobile { display: flex; }
+        }
+
         .hwt-card-zigzag { width: 42%; max-width: 500px; }
         .hwt-card-zigzag:nth-child(odd) { margin-left: clamp(24px, 5vw, 80px); margin-right: auto; transform: rotate(-3.5deg); }
         .hwt-card-zigzag:nth-child(even) { margin-left: auto; margin-right: clamp(24px, 5vw, 80px); transform: rotate(3.5deg); }
-        .combined-skyline-mobile-only { display: none; }
-        .combined-skyline-desktop-only { display: block; }
         @media (max-width: 768px) {
           .hwt-card-zigzag {
             width: 100% !important;
@@ -176,8 +198,6 @@ function CombinedSkylineHowWeThinkSection() {
           .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
           .combined-skyline-text { margin-top: 0 !important; margin-bottom: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
           .combined-hwt-sticky { position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; }
-          .combined-skyline-mobile-only { display: block; }
-          .combined-skyline-desktop-only { display: none; }
         }
       `}} />
       <section
@@ -394,27 +414,17 @@ function CombinedSkylineHowWeThinkSection() {
                 >
                   {item.title}
                 </h3>
-                <p
-                  className="combined-skyline-desktop-only"
-                  style={{
-                    fontSize: '0.85rem',
-                    color: 'rgba(255,255,255,0.7)',
-                    fontStyle: 'italic',
-                    margin: 0,
-                  }}
-                >
-                  Hover for more
+                <p className="card-hint card-hint-desktop">
+                  <span>Hover for more</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
                 </p>
-                <p
-                  className="combined-skyline-mobile-only"
-                  style={{
-                    fontSize: '0.85rem',
-                    color: 'rgba(255,255,255,0.7)',
-                    fontStyle: 'italic',
-                    margin: 0,
-                  }}
-                >
-                  Tap for more
+                <p className="card-hint card-hint-mobile">
+                  <span>Tap for more</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
                 </p>
               </div>
               {/* Hover/tap content (description) */}
@@ -479,8 +489,6 @@ function SimpleIndustriesSection() {
           top: clamp(80px, 10vh, 120px);
           align-self: start;
         }
-        .wws-card-hint-desktop { display: block; }
-        .wws-card-hint-mobile { display: none; }
         @media (max-width: 768px) {
           .wws-layout {
             grid-template-columns: 1fr;
@@ -489,8 +497,6 @@ function SimpleIndustriesSection() {
           .wws-heading {
             position: static;
           }
-          .wws-card-hint-desktop { display: none; }
-          .wws-card-hint-mobile { display: block; }
         }
       `}} />
       <section
@@ -611,27 +617,17 @@ function SimpleIndustriesSection() {
                     >
                       {industry.description}
                     </p>
-                    <p
-                      className="wws-card-hint-desktop"
-                      style={{
-                        fontSize: '0.85rem',
-                        color: 'rgba(255,255,255,0.7)',
-                        fontStyle: 'italic',
-                        margin: 0,
-                      }}
-                    >
-                      Hover for more
+                    <p className="card-hint card-hint-desktop">
+                      <span>Hover for more</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
                     </p>
-                    <p
-                      className="wws-card-hint-mobile"
-                      style={{
-                        fontSize: '0.85rem',
-                        color: 'rgba(255,255,255,0.7)',
-                        fontStyle: 'italic',
-                        margin: 0,
-                      }}
-                    >
-                      Tap for more
+                    <p className="card-hint card-hint-mobile">
+                      <span>Tap for more</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
                     </p>
                   </div>
                   {/* Hover/tap content (expanded details) */}

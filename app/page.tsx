@@ -817,7 +817,6 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
       <div
         ref={containerRef}
         style={{
-          position: 'relative',
           display: 'inline-block',
           minHeight: '52px',
         }}
@@ -1087,6 +1086,7 @@ function HeroContentSection() {
             alignItems: 'center',
             gap: '16px',
             flexWrap: 'wrap',
+            position: 'relative',
           }}>
               <a
                 key="get-in-touch-btn"

@@ -152,11 +152,6 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
                   bottom: '24px',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  zIndex: 10,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                  opacity: isFlipped ? 0 : 1,
-                  transition: 'opacity 0.25s ease',
                 }}
               >
                 {/* Name and Role together */}

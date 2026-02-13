@@ -1589,6 +1589,7 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
                 }}>
                   {tile.description}
                 </p>
+                <p className="card-hint" style={{ marginTop: '8px' }}>Tap for more</p>
               </div>
               {/* Expanded overlay — CSS transition, no motion.div */}
               <div

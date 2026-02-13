@@ -365,7 +365,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ background: '#ffffff' }}>
       <head>
         {/* Character encoding and viewport */}
         <meta charSet="UTF-8" />
@@ -412,6 +412,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${r2Font.variable} ${r2FontBold.variable} ${robotoMono.variable} ${inter.variable}`}
+        style={{ background: '#ffffff' }}
       >
         {/* Loading splash — raw HTML, renders on first paint before any JS */}
         <div

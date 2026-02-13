@@ -83,3 +83,22 @@ Causes React hydration error #300. Render both versions in DOM, use CSS media qu
 
 ### 4. Touch Interactions
 All interactive cards must include `touchAction: 'pan-y'` to allow vertical page scrolling. Use native touch handlers (onTouchStart/End/Cancel) instead of Framer Motion `whileHover` on mobile — the latter causes stuck hover states on touch devices.
+
+## Git Commit Requirements
+
+After completing a set of changes, **always commit and push**:
+
+1. `npm run build` must pass before committing.
+2. Stage only the files you changed — never `git add -A`.
+3. Write a concise commit message describing the "why" (1-2 sentences).
+4. Push to the current branch after committing.
+
+## Cloudflare Deployment
+
+After every push, **deploy a unique preview build** so the user can verify changes in-browser:
+
+```bash
+npm run build && npx wrangler pages deploy out --project-name r2-solutions --commit-dirty=true
+```
+
+This outputs a unique preview URL (`https://<hash>.r2-solutions.pages.dev`). Always share this URL with the user after deploying.

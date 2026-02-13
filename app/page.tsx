@@ -152,7 +152,7 @@ function CombinedSkylineHowWeThinkSection() {
           .hwt-card-zigzag:last-child { margin-bottom: 0 !important; }
           .combined-skyline-section { height: auto !important; }
           .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
-          .combined-skyline-text { margin-top: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
+          .combined-skyline-text { margin-top: 0 !important; margin-bottom: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
           .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 32px !important; }
           .combined-skyline-mobile-only { display: block; }
           .combined-skyline-desktop-only { display: none; }
@@ -163,7 +163,7 @@ function CombinedSkylineHowWeThinkSection() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '500vh',
+          height: '800vh',
         }}
       >
         {/* Skyline IMAGE only — sticky fullscreen background */}
@@ -207,6 +207,7 @@ function CombinedSkylineHowWeThinkSection() {
             zIndex: 2,
             marginTop: '-100vh',
             minHeight: '100vh',
+            marginBottom: '60vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -278,7 +279,7 @@ function CombinedSkylineHowWeThinkSection() {
           style={{
             position: 'relative',
             zIndex: 4,
-            padding: '80px clamp(24px, 4vw, 48px) 120px',
+            padding: 'clamp(200px, 30vh, 400px) clamp(24px, 4vw, 48px) 120px',
             paddingLeft: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-left))',
             paddingRight: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-right))',
           }}
@@ -430,9 +431,9 @@ function CombinedSkylineHowWeThinkSection() {
   );
 }
 
-// Industries Section - Sticky left heading, scrolling right cards
+// Industries Section - Sticky left heading, scrolling right cards with hover overlay
 function SimpleIndustriesSection() {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <>
@@ -445,9 +446,11 @@ function SimpleIndustriesSection() {
         }
         .wws-heading {
           position: sticky;
-          top: calc(50vh - 4rem);
+          top: clamp(80px, 10vh, 120px);
           align-self: start;
         }
+        .wws-card-hint-desktop { display: block; }
+        .wws-card-hint-mobile { display: none; }
         @media (max-width: 768px) {
           .wws-layout {
             grid-template-columns: 1fr;
@@ -456,6 +459,8 @@ function SimpleIndustriesSection() {
           .wws-heading {
             position: static;
           }
+          .wws-card-hint-desktop { display: none; }
+          .wws-card-hint-mobile { display: block; }
         }
       `}} />
       <section
@@ -464,7 +469,7 @@ function SimpleIndustriesSection() {
           position: 'relative',
           width: '100%',
           background: '#ffffff',
-          padding: 'clamp(80px, 12vh, 120px) clamp(24px, 4vw, 48px)',
+          padding: 'clamp(140px, 20vh, 240px) clamp(24px, 4vw, 48px) clamp(80px, 12vh, 120px)',
         }}
       >
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -486,52 +491,64 @@ function SimpleIndustriesSection() {
               </h2>
             </div>
 
-            {/* Right column - Scrolling cards */}
+            {/* Right column - Scrolling cards with hover overlay */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {industries.map((industry, index) => (
                 <div
                   key={index}
                   style={{
                     position: 'relative',
+                    height: '280px',
                     borderRadius: 12,
                     overflow: 'hidden',
                     boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
                     cursor: 'pointer',
-                    transition: 'transform 0.2s ease',
                     touchAction: 'pan-y',
                     WebkitTapHighlightColor: 'transparent',
                   }}
-                  onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)';
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onTouchStart={() => {
+                    setHoveredIndex(hoveredIndex === index ? null : index);
                   }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
+                  onTouchEnd={() => {
+                    // Don't prevent default - allow native scroll
                   }}
+                  onTouchCancel={() => setHoveredIndex(null)}
                 >
                   {/* Card image */}
-                  <div style={{ position: 'relative', height: '220px', width: '100%' }}>
-                    <img
-                      src={industry.image}
-                      alt={industry.name}
-                      loading="lazy"
-                      decoding="async"
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                    {/* Gradient overlay */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
-                      }}
-                    />
-                  </div>
-                  {/* Card text */}
+                  <img
+                    src={industry.image}
+                    alt={industry.name}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                  {/* Light gradient overlay (always visible) */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)',
+                    }}
+                  />
+                  {/* Dark hover overlay */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'rgba(0, 0, 0, 0.75)',
+                      opacity: hoveredIndex === index ? 1 : 0,
+                      transition: 'opacity 0.3s ease',
+                    }}
+                  />
+                  {/* Default content (name + description + hint) */}
                   <div
                     style={{
                       position: 'absolute',
@@ -539,6 +556,8 @@ function SimpleIndustriesSection() {
                       left: 0,
                       right: 0,
                       padding: '24px',
+                      opacity: hoveredIndex === index ? 0 : 1,
+                      transition: 'opacity 0.3s ease',
                     }}
                   >
                     <h3
@@ -557,23 +576,69 @@ function SimpleIndustriesSection() {
                         fontSize: 'clamp(0.9rem, 1.1vw, 1rem)',
                         color: 'rgba(255,255,255,0.9)',
                         lineHeight: 1.6,
-                        marginBottom: expandedIndex === index ? 12 : 0,
+                        marginBottom: 6,
                       }}
                     >
                       {industry.description}
                     </p>
-                    {expandedIndex === index && industry.expandedContent && (
-                      <p
-                        style={{
-                          fontSize: 'clamp(0.85rem, 1vw, 0.95rem)',
-                          color: 'rgba(255,255,255,0.85)',
-                          lineHeight: 1.6,
-                          marginTop: 8,
-                        }}
-                      >
-                        {industry.expandedContent}
-                      </p>
-                    )}
+                    <p
+                      className="wws-card-hint-desktop"
+                      style={{
+                        fontSize: '0.85rem',
+                        color: 'rgba(255,255,255,0.7)',
+                        fontStyle: 'italic',
+                        margin: 0,
+                      }}
+                    >
+                      Hover for more
+                    </p>
+                    <p
+                      className="wws-card-hint-mobile"
+                      style={{
+                        fontSize: '0.85rem',
+                        color: 'rgba(255,255,255,0.7)',
+                        fontStyle: 'italic',
+                        margin: 0,
+                      }}
+                    >
+                      Tap for more
+                    </p>
+                  </div>
+                  {/* Hover/tap content (expanded details) */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      padding: '24px',
+                      opacity: hoveredIndex === index ? 1 : 0,
+                      transform: hoveredIndex === index ? 'translateY(0)' : 'translateY(10px)',
+                      transition: 'opacity 0.3s ease, transform 0.3s ease',
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontSize: 'clamp(1.3rem, 2vw, 1.6rem)',
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        marginBottom: 12,
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {industry.name}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)',
+                        color: 'rgba(255,255,255,0.9)',
+                        lineHeight: 1.6,
+                        margin: 0,
+                      }}
+                    >
+                      {industry.expandedContent}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -1255,7 +1320,7 @@ function WhatWeDoAnimated() {
         position: 'relative',
         width: '100%',
         background: '#ffffff',
-        padding: 'clamp(140px, 18vh, 200px) clamp(24px, 4vw, 48px) clamp(60px, 8vh, 80px)',
+        padding: 'clamp(140px, 18vh, 200px) clamp(24px, 4vw, 48px) clamp(120px, 18vh, 200px)',
       }}
     >
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>

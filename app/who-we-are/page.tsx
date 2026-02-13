@@ -112,7 +112,7 @@ export default function WhoWeAre() {
                 }}
               >
                 <img
-                  src="/images/headshots/rich-headshot.jpeg"
+                  src="/images/headshots/rich-headshot.webp"
                   alt="Rich - Co-Founder & CEO"
                   style={{
                     width: '100%',
@@ -193,7 +193,7 @@ export default function WhoWeAre() {
                 }}
               >
                 <img
-                  src="/images/headshots/will-headshot.jpeg"
+                  src="/images/headshots/will-headshot.webp"
                   alt="Will - Co-Founder & CTO"
                   style={{
                     width: '100%',
@@ -274,7 +274,7 @@ export default function WhoWeAre() {
                 }}
               >
                 <img
-                  src="/images/headshots/tyler-headshot.jpeg"
+                  src="/images/headshots/tyler-headshot.webp"
                   alt="Tyler - Co-Founder & CPO"
                   style={{
                     width: '100%',

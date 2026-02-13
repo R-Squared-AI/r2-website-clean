@@ -41,19 +41,19 @@ const aiCapabilities = [
 const industries = [
   {
     name: 'Private Equity',
-    image: '/images/industries/private-equity.jpg',
+    image: '/images/industries/private-equity.webp',
     description: 'Portfolio companies need fast wins. We deliver wins fast.',
     expandedContent: 'Your portfolio companies operate on tight timelines. Our AI agents deploy in weeks, not quarters - improving pipeline visibility, forecast accuracy, and rep productivity within the first 90 days. Built for the velocity PE-backed companies demand.',
   },
   {
     name: 'Insurance',
-    image: '/images/industries/insurance-new.jpg',
+    image: '/images/industries/insurance-new.webp',
     description: 'We enable producers. Simple as that.',
     expandedContent: 'Our AI agents handle the admin work - call notes, CRM updates, renewal tracking - so producers can focus on what they do best: building client relationships and writing business. AI-powered underwriting assistance, claims automation, and policyholder engagement.',
   },
   {
     name: 'Manufacturing',
-    image: '/images/industries/manufacturing.jpg',
+    image: '/images/industries/manufacturing.webp',
     description: 'Long cycles, complex products. We track it all.',
     expandedContent: 'Manage multi-year relationships and complex product portfolios with AI that surfaces opportunities for your reps.',
   },
@@ -990,21 +990,21 @@ export default function HomePage() {
               company: "",
               quote: "Your tools are siloed. We connect them. Call intelligence, email analysis, CRM data, and pipeline signals all feed into one orchestrated intelligence layer.",
               attribution: "",
-              image: "/images/carousel/why-r2-1.jpg",
+              image: "/images/carousel/why-r2-1.webp",
             },
             {
               title: "Production in Weeks",
               company: "",
               quote: "2-8 weeks to production. No 6-month implementations that never ship. Deploy fast, iterate faster.",
               attribution: "",
-              image: "/images/carousel/why-r2-2.jpg",
+              image: "/images/carousel/why-r2-2.webp",
             },
             {
               title: "Built for Your Reality",
               company: "",
               quote: "Works inside Salesforce, Dynamics, HubSpot - wherever your team lives. No rip-and-replace. No migrations.",
               attribution: "",
-              image: "/images/carousel/why-r2-3.jpg",
+              image: "/images/carousel/why-r2-3.webp",
             },
           ]}
         />
@@ -1040,25 +1040,25 @@ export default function HomePage() {
           items={[
             {
               id: 1,
-              url: "/images/carousel/meeting.jpg",
+              url: "/images/carousel/meeting.webp",
               title: "Discovery & Design",
               description: "2-hour working session to map processes and design solutions.",
             },
             {
               id: 2,
-              url: "/images/carousel/deployment.jpg",
+              url: "/images/carousel/deployment.webp",
               title: "Rapid Deployment",
               description: "AI agents deployed in weeks, not months.",
             },
             {
               id: 3,
-              url: "/images/what-we-do/sales.jpg",
+              url: "/images/what-we-do/sales.webp",
               title: "Continuous Optimization",
               description: "Agents learn from usage patterns and edge cases. Performance improves without manual tuning.",
             },
             {
               id: 4,
-              url: "/images/carousel/measurable.jpg",
+              url: "/images/carousel/measurable.webp",
               title: "Measurable Impact",
               description: "15-25% forecast accuracy, 20-30% pipeline expansion.",
             },
@@ -1228,25 +1228,25 @@ function WhatWeDoAnimated() {
     name: "Audit-Ready from Day One",
     description: "Regulatory ready.",
     expandedContent: "Full audit trails on every AI action. Explainable decisions your compliance team can review. No black boxes.",
-    image: "/images/what-we-do/audit-new.jpg",
+    image: "/images/what-we-do/audit-new.webp",
   };
   const middle = {
     name: "Pipeline Intelligence",
     description: "Spot at-risk deals earlier.",
     expandedContent: "Real-time deal health scoring powered by conversation analysis, engagement tracking, and win/loss patterns. Get alerts before opportunities disappear.",
-    image: "/images/what-we-do/pipeline-new.jpg",
+    image: "/images/what-we-do/pipeline-new.webp",
   };
   const rightTop = {
     name: "Sales Enablement",
     description: "Give reps time back every week.",
     expandedContent: "Automatic call logging, contact updates, and activity capture. Your reps sell and our AI does the CRM hygiene.",
-    image: "/images/what-we-do/sales-new.jpg",
+    image: "/images/what-we-do/sales-new.webp",
   };
   const rightBottom = {
     name: "Your Stack, Enhanced",
     description: "Built to enhance Salesforce, Dynamics, HubSpot, not replace them.",
     expandedContent: "We layer intelligence on top of your existing CRM, ERP, and communication tools. No migrations. No rip-and-replace. Just smarter systems.",
-    image: "/images/what-we-do/stack-new.jpg",
+    image: "/images/what-we-do/stack-new.webp",
   };
 
   return (
@@ -1343,7 +1343,7 @@ function FoundersScrollSection() {
       name: "Rich",
       fullName: "Rich Rivara",
       role: "CEO",
-      image: "/images/headshots/Rich Headshot 2.jpeg",
+      image: "/images/headshots/rich-headshot.webp",
       description: "20+ years scaling revenue operations across enterprise tech. Former executive at Appirio (acquired for $500M) and BridgeNext, where he built sales organizations from $0 to 8-figure ARR. His network includes Fortune 500 CROs, VPs of Sales Operations, and revenue leaders who have deployed AI at scale. Not a consultant. A former operator who carried quota and built teams.",
       linkedInUrl: "https://www.linkedin.com/in/rich-rivara-388ba82/",
     },
@@ -1351,7 +1351,7 @@ function FoundersScrollSection() {
       name: "Will",
       fullName: "Will Godfrey",
       role: "CTO",
-      image: "/images/headshots/Will Headshot copy.jpeg",
+      image: "/images/headshots/will-headshot.webp",
       description: "Former McKinsey technologist who architected enterprise systems for Fortune 500 companies with $500M-$1B+ in revenue. Led the Google Workspace rollout for the City of Boston (30,000+ users), managing complex change management and technical integration across fragmented legacy systems. Specialized in translating messy business requirements into scalable technical architecture.",
       linkedInUrl: "https://www.linkedin.com/in/willgodfrey/",
     },
@@ -1359,7 +1359,7 @@ function FoundersScrollSection() {
       name: "Tyler",
       fullName: "Tyler Preisser",
       role: "CPO",
-      image: "/images/headshots/Tyler Headshot.jpeg",
+      image: "/images/headshots/tyler-headshot.webp",
       description: "AI-native product leader. Former VP of Operations who automated an entire back office using agentic AI -not theory, actual production systems processing thousands of workflows daily. His background: operational efficiency through AI-first design. He understands what makes AI agents reliable enough for enterprise deployment -because he's already done it.",
       linkedInUrl: "https://www.linkedin.com/in/tyler-preisser-803605233/",
     },

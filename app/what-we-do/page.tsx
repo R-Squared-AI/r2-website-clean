@@ -102,28 +102,28 @@ export default function WhatWeDo() {
               }
             `}} />
             <div style={{ gridColumn: '1 / 9', gridRow: '1 / 3', borderRadius: 24, padding: 'clamp(24px, 3vw, 48px)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
-              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/yellow-glow-road.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/yellow-glow-road.webp)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
               <div style={{ position: 'relative', zIndex: 2 }}>
                 <h3 style={{ fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)', fontWeight: 700, color: '#fff', marginBottom: 12, lineHeight: 1.2, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>AI DISCOVERY & DESIGN WORKSHOP</h3>
                 <p style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.05rem)', color: 'rgba(255,255,255,0.95)', lineHeight: 1.55, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>We start with a 2-hour working session where we map your current processes, identify where AI can help, and design the solution together. You walk away with a clear roadmap of what we'll build and how it will work.</p>
               </div>
             </div>
             <div style={{ gridColumn: '9 / 13', gridRow: '1 / 2', borderRadius: 24, padding: 'clamp(20px, 2.5vw, 36px)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
-              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/r2-billboard.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/r2-billboard.webp)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
               <div style={{ position: 'relative', zIndex: 2 }}>
                 <h3 style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', fontWeight: 700, color: '#fff', marginBottom: 8, lineHeight: 1.2, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>AGENT & WORKFLOW IMPLEMENTATION</h3>
                 <p style={{ fontSize: 'clamp(0.85rem, 1.1vw, 0.95rem)', color: 'rgba(255,255,255,0.95)', lineHeight: 1.5, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>We build your AI agents and workflows using our templatized platform. Faster delivery, solutions that work in production.</p>
               </div>
             </div>
             <div style={{ gridColumn: '9 / 13', gridRow: '2 / 3', borderRadius: 24, padding: 'clamp(20px, 2.5vw, 36px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
-              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/business-specific-ai.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/business-specific-ai.webp)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
               <div style={{ position: 'relative', zIndex: 2 }}>
                 <h3 style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', fontWeight: 700, color: '#fff', lineHeight: 1.2, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>TEMPLATIZED AI OPERATIONS PLATFORM</h3>
                 <p style={{ fontSize: 'clamp(0.8rem, 1vw, 0.9rem)', color: 'rgba(255,255,255,0.95)', lineHeight: 1.45, marginTop: 8, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>Accelerates delivery and ensures your solution follows proven best practices.</p>
               </div>
             </div>
             <div style={{ gridColumn: '1 / 13', gridRow: '3 / 5', borderRadius: 24, padding: 'clamp(28px, 3vw, 44px)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
-              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/industry-specific-ai.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(140deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url(/images/industry-specific-ai.webp)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 1 }} />
               <div style={{ position: 'relative', zIndex: 2 }}>
                 <h3 style={{ fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)', fontWeight: 700, color: '#fff', marginBottom: 12, lineHeight: 1.2, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>ONGOING TUNING & SUPPORT</h3>
                 <p style={{ fontSize: 'clamp(1rem, 1.25vw, 1.1rem)', color: 'rgba(255,255,255,0.95)', lineHeight: 1.6, fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>After deployment, we monitor performance and make adjustments based on real usage. Your AI agents get smarter over time.</p>

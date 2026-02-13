@@ -980,18 +980,16 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
         `}} />
       )}
 
-      {/* Mobile form - Portal to escape BlurFade transform */}
-      {mounted && isMobile && isExpanded && createPortal(
+      {/* Mobile form - Inline absolute positioned overlay */}
+      {mounted && isMobile && isExpanded && (
         <div
           className="mobile-beehiiv-portal"
           style={{
-            position: 'fixed',
-            top: '140px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 'calc(100% - 32px)',
-            maxWidth: '400px',
-            zIndex: 9999,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 10,
           }}
         >
           {/* Mobile iframe - NO data-test-id to avoid embed.js errors with portals */}
@@ -1009,8 +1007,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
               maxWidth: '100%',
             }}
           />
-        </div>,
-        document.body
+        </div>
       )}
     </>
   );
@@ -1465,11 +1462,21 @@ function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description:
     const el = scrollRef.current;
     if (!el) return;
     const onScroll = () => {
-      const scrollLeft = el.scrollLeft;
-      const cardWidth = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth : 1;
-      const gap = 16;
-      const idx = Math.round(scrollLeft / (cardWidth + gap));
-      setActiveIndex(Math.min(idx, tiles.length - 1));
+      // Find which card's center is closest to the viewport center
+      const containerCenter = el.scrollLeft + el.clientWidth / 2;
+      const children = Array.from(el.children).filter(c => c.classList.contains('wwd-mobile-card'));
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      children.forEach((child, i) => {
+        const childEl = child as HTMLElement;
+        const childCenter = childEl.offsetLeft + childEl.offsetWidth / 2;
+        const dist = Math.abs(containerCenter - childCenter);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIdx = i;
+        }
+      });
+      setActiveIndex(closestIdx);
     };
     el.addEventListener('scroll', onScroll, { passive: true });
     return () => el.removeEventListener('scroll', onScroll);

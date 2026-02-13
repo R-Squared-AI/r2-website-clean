@@ -154,7 +154,6 @@ function CombinedSkylineHowWeThinkSection() {
           .combined-skyline-section { height: auto !important; }
           .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
           .combined-skyline-text { margin-top: 0 !important; margin-bottom: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
-          .combined-hwt-wrapper { height: auto !important; }
           .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 32px !important; }
           .combined-skyline-mobile-only { display: block; }
           .combined-skyline-desktop-only { display: none; }
@@ -165,7 +164,7 @@ function CombinedSkylineHowWeThinkSection() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '550vh',
+          height: '420vh',
         }}
       >
         {/* Skyline IMAGE only — sticky fullscreen background */}
@@ -247,34 +246,32 @@ function CombinedSkylineHowWeThinkSection() {
           </h2>
         </div>
 
-        {/* HOW WE THINK heading wrapper — constrains how long the heading stays sticky */}
-        <div className="combined-hwt-wrapper" style={{ height: '100vh', position: 'relative', zIndex: 3 }}>
-          <div
-            className="combined-hwt-sticky"
-            data-header-theme="dark"
+        {/* "HOW WE THINK" heading — sticky, cards scroll over it at higher z-index */}
+        <div
+          className="combined-hwt-sticky"
+          data-header-theme="dark"
+          style={{
+            position: 'sticky',
+            top: 'calc(50vh - 3rem)',
+            zIndex: 3,
+            textAlign: 'center',
+            padding: '24px 16px',
+          }}
+        >
+          <h2
             style={{
-              position: 'sticky',
-              top: 'calc(50vh - 3rem)',
-              zIndex: 3,
-              textAlign: 'center',
-              padding: '24px 16px',
+              fontSize: 'clamp(2rem, 6vw, 5rem)',
+              fontWeight: 700,
+              color: '#ffffff',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
+              margin: 0,
             }}
           >
-            <h2
-              style={{
-                fontSize: 'clamp(2rem, 6vw, 5rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.1,
-                textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
-                margin: 0,
-              }}
-            >
-              HOW WE THINK
-            </h2>
-          </div>
+            HOW WE THINK
+          </h2>
         </div>
 
         {/* Cards container — normal flow, scrolls over heading */}

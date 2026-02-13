@@ -154,6 +154,7 @@ function CombinedSkylineHowWeThinkSection() {
           .combined-skyline-section { height: auto !important; }
           .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
           .combined-skyline-text { margin-top: 0 !important; margin-bottom: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
+          .combined-hwt-wrapper { height: auto !important; }
           .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 32px !important; }
           .combined-skyline-mobile-only { display: block; }
           .combined-skyline-desktop-only { display: none; }
@@ -247,7 +248,7 @@ function CombinedSkylineHowWeThinkSection() {
         </div>
 
         {/* HOW WE THINK heading wrapper — constrains how long the heading stays sticky */}
-        <div style={{ height: '100vh', position: 'relative', zIndex: 3 }}>
+        <div className="combined-hwt-wrapper" style={{ height: '100vh', position: 'relative', zIndex: 3 }}>
           <div
             className="combined-hwt-sticky"
             data-header-theme="dark"

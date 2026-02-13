@@ -135,17 +135,25 @@ function CombinedSkylineHowWeThinkSection() {
   return (
     <>
       <style dangerouslySetInnerHTML={{__html: `
-        .hwt-card-zigzag { width: 65%; max-width: 500px; }
-        .hwt-card-zigzag:nth-child(1) { margin-left: 0; margin-right: auto; transform: rotate(-2deg); }
-        .hwt-card-zigzag:nth-child(2) { margin-left: auto; margin-right: 0; transform: rotate(2deg); }
-        .hwt-card-zigzag:nth-child(3) { margin-left: 0; margin-right: auto; transform: rotate(-1.5deg); }
+        .hwt-card-zigzag { width: 50%; max-width: 600px; }
+        .hwt-card-zigzag:nth-child(odd) { margin-left: clamp(24px, 5vw, 80px); margin-right: auto; transform: rotate(-2deg); }
+        .hwt-card-zigzag:nth-child(even) { margin-left: auto; margin-right: clamp(24px, 5vw, 80px); transform: rotate(2deg); }
         .combined-skyline-mobile-only { display: none; }
         .combined-skyline-desktop-only { display: block; }
         @media (max-width: 768px) {
-          .hwt-card-zigzag { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; transform: none !important; }
+          .hwt-card-zigzag {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            transform: none !important;
+            margin-bottom: 48px !important;
+          }
+          .hwt-card-zigzag:last-child { margin-bottom: 0 !important; }
           .combined-skyline-section { height: auto !important; }
-          .combined-skyline-sticky { position: static !important; height: min(60vh, 500px) !important; }
-          .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 24px !important; }
+          .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
+          .combined-skyline-text { margin-top: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
+          .combined-hwt-sticky { position: static !important; top: auto !important; margin-bottom: 32px !important; }
           .combined-skyline-mobile-only { display: block; }
           .combined-skyline-desktop-only { display: none; }
         }
@@ -155,13 +163,12 @@ function CombinedSkylineHowWeThinkSection() {
         style={{
           position: 'relative',
           width: '100%',
-          height: '400vh',
+          height: '500vh',
         }}
       >
-        {/* Skyline — sticky fullscreen background */}
+        {/* Skyline IMAGE only — sticky fullscreen background */}
         <div
-          className="combined-skyline-sticky"
-          data-header-theme="dark"
+          className="combined-skyline-img-sticky"
           style={{
             position: 'sticky',
             top: 0,
@@ -189,75 +196,80 @@ function CombinedSkylineHowWeThinkSection() {
               background: 'rgba(0,0,0,0.5)',
             }}
           />
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '0 24px',
-              zIndex: 1,
-            }}
-          >
-            <p
-              style={{
-                fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
-                fontWeight: 600,
-                color: 'rgba(255, 255, 255, 0.9)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                marginBottom: 16,
-                textAlign: 'center',
-              }}
-            >
-              From discovery to deployed agents in 6-8 weeks. Not slidewares. Working systems.
-            </p>
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.1,
-                letterSpacing: '-0.02em',
-                textAlign: 'center',
-                maxWidth: '1200px',
-              }}
-            >
-              WHAT YOUR SALES PROCESS LOOKS LIKE WITH R<sup style={{ fontSize: '0.6em' }}>2</sup>
-            </h2>
-          </div>
         </div>
 
-        {/* "HOW WE THINK" heading — sticky */}
+        {/* Skyline TEXT — normal flow, overlaps image via negative margin, scrolls out naturally */}
+        <div
+          className="combined-skyline-text"
+          data-header-theme="dark"
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            marginTop: '-100vh',
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '0 24px',
+          }}
+        >
+          <p
+            style={{
+              fontSize: 'clamp(0.85rem, 1.5vw, 1.1rem)',
+              fontWeight: 600,
+              color: 'rgba(255, 255, 255, 0.95)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: 16,
+              textAlign: 'center',
+              textShadow: '0 1px 8px rgba(0,0,0,0.6)',
+            }}
+          >
+            From discovery to deployed agents in 6-8 weeks. Not slidewares. Working systems.
+          </p>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 6vw, 5rem)',
+              fontWeight: 700,
+              color: '#ffffff',
+              lineHeight: 1.1,
+              letterSpacing: '-0.02em',
+              textAlign: 'center',
+              maxWidth: '1200px',
+              textShadow: '0 2px 16px rgba(0,0,0,0.8)',
+            }}
+          >
+            WHAT YOUR SALES PROCESS LOOKS LIKE WITH R<sup style={{ fontSize: '0.6em' }}>2</sup>
+          </h2>
+        </div>
+
+        {/* "HOW WE THINK" heading — sticky, plain white text */}
         <div
           className="combined-hwt-sticky"
+          data-header-theme="dark"
           style={{
             position: 'sticky',
             top: 'calc(50vh - 3rem)',
-            zIndex: 2,
+            zIndex: 3,
             textAlign: 'center',
-            padding: '24px 0',
+            padding: '24px 16px',
           }}
         >
-          <span
+          <h2
             style={{
-              display: 'inline-block',
-              background: 'rgba(255,255,255,0.95)',
-              padding: '12px 32px',
-              borderRadius: 8,
-              fontSize: 'clamp(2rem, 5vw, 4rem)',
+              fontSize: 'clamp(2rem, 6vw, 5rem)',
               fontWeight: 700,
-              color: '#111827',
+              color: '#ffffff',
               textTransform: 'uppercase',
               letterSpacing: '-0.02em',
               lineHeight: 1.1,
-              boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6)',
+              margin: 0,
             }}
           >
             HOW WE THINK
-          </span>
+          </h2>
         </div>
 
         {/* Cards container — normal flow, scrolls over heading */}
@@ -265,10 +277,10 @@ function CombinedSkylineHowWeThinkSection() {
           data-header-theme="light"
           style={{
             position: 'relative',
-            zIndex: 3,
-            padding: '40px clamp(24px, 4vw, 48px) 120px',
-            maxWidth: '900px',
-            margin: '0 auto',
+            zIndex: 4,
+            padding: '80px clamp(24px, 4vw, 48px) 120px',
+            paddingLeft: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-left))',
+            paddingRight: 'max(clamp(24px, 4vw, 48px), env(safe-area-inset-right))',
           }}
         >
           {aiCapabilities.map((item, index) => (
@@ -277,23 +289,31 @@ function CombinedSkylineHowWeThinkSection() {
               className="hwt-card-zigzag"
               style={{
                 position: 'relative',
-                height: '280px',
+                height: '300px',
                 borderRadius: 12,
                 overflow: 'hidden',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-                marginBottom: index < aiCapabilities.length - 1 ? 80 : 0,
+                marginBottom: index < aiCapabilities.length - 1 ? 180 : 0,
                 cursor: 'pointer',
                 touchAction: 'pan-y',
                 WebkitTapHighlightColor: 'transparent',
               }}
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
-              onTouchStart={() => setHoveredCard(hoveredCard === index ? null : index)}
+              onTouchStart={(e) => {
+                setHoveredCard(hoveredCard === index ? null : index)
+              }}
+              onTouchEnd={(e) => {
+                // Don't prevent default - allow native scroll
+              }}
+              onTouchCancel={() => setHoveredCard(null)}
             >
               {/* Card image */}
               <img
                 src={item.image}
                 alt={item.title}
+                loading="lazy"
+                decoding="async"
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -478,6 +498,8 @@ function SimpleIndustriesSection() {
                     boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease',
+                    touchAction: 'pan-y',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                   onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
                   onMouseEnter={(e) => {
@@ -492,6 +514,8 @@ function SimpleIndustriesSection() {
                     <img
                       src={industry.image}
                       alt={industry.name}
+                      loading="lazy"
+                      decoding="async"
                       style={{
                         width: '100%',
                         height: '100%',
@@ -653,22 +677,22 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
             alignItems: 'center',
             justifyContent: 'center',
             gap: 10,
-            background: '#032CC8',
+            background: '#ffffff',
             padding: '1em 1.8em',
             borderRadius: 10,
-            border: isHovered && !isExpanded ? '1px solid rgba(3, 44, 200, 0.4)' : '1px solid rgba(3, 44, 200, 0.3)',
+            border: isHovered && !isExpanded ? '2px solid rgba(0, 0, 0, 0.15)' : '2px solid rgba(0, 0, 0, 0.1)',
             cursor: isExpanded ? 'default' : 'pointer',
             fontSize: '1rem',
             fontWeight: 600,
-            color: '#ffffff',
+            color: '#032CC8',
             fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
             pointerEvents: isExpanded ? 'none' : 'auto',
             opacity: isExpanded ? 0 : 1,
             transform: isHovered && !isExpanded ? 'translateY(8px)' : 'translateY(0)',
             boxShadow: isHovered && !isExpanded
-              ? 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.3), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.15), -0.5px -0.5px 0px rgba(255, 255, 255, 0.3), 0.5px 0.5px 0px rgba(0, 0, 0, 0.2), 0px 12px 10px -10px rgba(0, 0, 0, 0.1)'
-              : '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)',
-            transition: 'opacity 0.25s, transform 0.2s ease-out, box-shadow 0.2s ease-out',
+              ? 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)'
+              : '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
+            transition: 'opacity 0.25s, transform 0.2s ease-out, box-shadow 0.2s ease-out, border 0.2s ease-out',
             // iOS Safari tap optimization
             WebkitTapHighlightColor: 'transparent',
             touchAction: 'manipulation',
@@ -845,17 +869,17 @@ function HeroContentSection() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 10,
-                    background: '#032CC8',
+                    background: '#ffffff',
                     padding: '1em 1.8em',
                     borderRadius: 10,
-                    border: '1px solid rgba(3, 44, 200, 0.3)',
+                    border: '2px solid rgba(0, 0, 0, 0.1)',
                     cursor: 'pointer',
                     fontSize: '1rem',
                     fontWeight: 600,
-                    color: '#ffffff',
+                    color: '#032CC8',
                     fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                     textDecoration: 'none',
-                    boxShadow: '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)',
+                    boxShadow: '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
                     transition: 'opacity 0.2s, transform 0.2s, box-shadow 0.2s',
                     opacity: isFormExpanded ? 0 : 1,
                     transform: 'scale(1)',
@@ -866,24 +890,24 @@ function HeroContentSection() {
                   // CSS-based hover for smooth non-stuck animations
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(8px)';
-                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.3), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.15), -0.5px -0.5px 0px rgba(255, 255, 255, 0.3), 0.5px 0.5px 0px rgba(0, 0, 0, 0.2), 0px 12px 10px -10px rgba(0, 0, 0, 0.1)';
+                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0px)';
-                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)';
+                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
                   }}
                   // Touch event handlers to force-reset animation on mobile
                   onTouchStart={(e) => {
                     e.currentTarget.style.transform = 'translateY(8px)';
-                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.3), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.15), -0.5px -0.5px 0px rgba(255, 255, 255, 0.3), 0.5px 0.5px 0px rgba(0, 0, 0, 0.2), 0px 12px 10px -10px rgba(0, 0, 0, 0.1)';
+                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
                   }}
                   onTouchEnd={(e) => {
                     e.currentTarget.style.transform = 'translateY(0px)';
-                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)';
+                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
                   }}
                   onTouchCancel={(e) => {
                     e.currentTarget.style.transform = 'translateY(0px)';
-                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.2), -6px -6px 10px -1px rgba(255, 255, 255, 0.5)';
+                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
                   }}
                 >
                   Get In Touch
@@ -1151,7 +1175,7 @@ function AccordionColumn({
           cta="Learn More"
           Icon={() => <div />}
           isShrunk={topIsShrunk}
-          background={<img src={topTile.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+          background={<img src={topTile.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
         />
       </div>
 
@@ -1175,7 +1199,7 @@ function AccordionColumn({
           cta="Learn More"
           Icon={() => <div />}
           isShrunk={bottomIsShrunk}
-          background={<img src={bottomTile.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+          background={<img src={bottomTile.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
         />
       </div>
     </div>
@@ -1198,7 +1222,7 @@ function WhatWeDoAnimated() {
     name: "Expansion & Cross-Sell",
     description: "15-30% more pipeline from existing customers.",
     expandedContent: "Your client base is a goldmine of information. Our agents analyze usage patterns, contract timelines, and engagement signals to surface expansion opportunities.",
-    image: "/images/what-we-do/expansion-new.png",
+    image: "/images/what-we-do/expansion-new.webp",
   };
   const leftBottom = {
     name: "Audit-Ready from Day One",
@@ -1262,7 +1286,7 @@ function WhatWeDoAnimated() {
                 href="/solutions"
                 cta="Learn More"
                 Icon={() => <div />}
-                background={<img src={tile.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                background={<img src={tile.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
               />
             </div>
           ))}
@@ -1290,7 +1314,7 @@ function WhatWeDoAnimated() {
               href="/solutions"
               cta="Learn More"
               Icon={() => <div />}
-              background={<img src={middle.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+              background={<img src={middle.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
             />
           </div>
 
@@ -1455,6 +1479,8 @@ function WhiteFooter() {
             <img
               src="/r2-logo.webp"
               alt="R² AI"
+              loading="lazy"
+              decoding="async"
               style={{
                 height: 'clamp(50px, 8vw, 70px)',
                 width: 'auto',

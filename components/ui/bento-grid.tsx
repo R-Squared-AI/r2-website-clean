@@ -66,6 +66,12 @@ const BentoCard = ({
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={(e) => {
+        // Allow touch to toggle on mobile
+        setTimeout(() => setIsHovered(false), 2000);
+      }}
+      onTouchCancel={() => setIsHovered(false)}
       style={{
         // Allow vertical page scroll even when touching cards
         touchAction: 'pan-y',

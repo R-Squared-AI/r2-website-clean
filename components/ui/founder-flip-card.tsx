@@ -37,6 +37,7 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
         @media (max-width: 768px) {
           .desktop-only { display: none; }
           .mobile-only { display: block; }
+          .founder-description-text { font-size: 0.9375rem !important; line-height: 1.7 !important; }
         }
       `}} />
     <motion.div
@@ -47,8 +48,6 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
         perspective: '1000px',
         width: '100%',
         height: '100%',
-        transform: 'translateZ(0)',
-        willChange: 'transform',
       }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -71,8 +70,6 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
           width: '100%',
           height: '100%',
           transformStyle: 'preserve-3d',
-          transform: 'translateZ(0)',
-          willChange: 'transform',
         }}
       >
         {/* Front of card */}
@@ -257,6 +254,7 @@ export function FounderFlipCard({ name, fullName, role, image, description, link
             }}
           >
             <div
+              className="founder-description-text"
               style={{
                 fontSize: 'clamp(0.75rem, 1.2vw, 0.95rem)',
                 color: '#1f2937',

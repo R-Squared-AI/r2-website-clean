@@ -66,66 +66,77 @@ const industries = [
 // Simple Hero Section - dark background with particles
 function SimpleHeroSection() {
   return (
-    <section
-      data-header-theme="light"
-      style={{
-        position: 'relative',
-        width: '100%',
-        minHeight: '100vh',
-        background: '#ffffff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Particles background */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        zIndex: 0,
-      }}>
-        <Particles
-          className="absolute inset-0"
-          quantity={150}
-          ease={80}
-          color="#032CC8"
-          size={0.5}
-          refresh={false}
-        />
-      </div>
-
-      {/* Hero content */}
-      <HeroContentSection />
-
-      {/* Animated scroll arrow */}
-      <motion.div
-        animate={{ y: [0, 12, 0] }}
-        transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hero-section { min-height: 100vh; }
+        @supports (min-height: 100dvh) { .hero-section { min-height: 100dvh; } }
+      `}} />
+      <section
+        className="hero-section"
+        data-header-theme="light"
         style={{
-          position: 'absolute',
-          bottom: 'clamp(24px, 4vh, 48px)',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          cursor: 'pointer',
-          zIndex: 2,
+          position: 'relative',
+          width: '100%',
+          background: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
         }}
       >
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="rgba(0, 0, 0, 0.5)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        {/* Particles background */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+        }}>
+          <Particles
+            className="absolute inset-0"
+            quantity={150}
+            ease={80}
+            color="#032CC8"
+            size={0.5}
+            refresh={false}
+          />
+        </div>
+
+        {/* Hero content */}
+        <HeroContentSection />
+
+        {/* Animated scroll arrow — centering via flex parent, not transform */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 'clamp(24px, 4vh, 48px)',
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            zIndex: 2,
+          }}
         >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </motion.div>
-    </section>
+          <motion.div
+            animate={{ y: [0, 12, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            style={{ cursor: 'pointer' }}
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="rgba(0, 0, 0, 0.5)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -189,10 +200,10 @@ function CombinedSkylineHowWeThinkSection() {
             margin-bottom: 48px !important;
           }
           .hwt-card-zigzag:last-child { margin-bottom: 0 !important; }
-          .combined-skyline-section { height: auto !important; }
-          .combined-skyline-img-sticky { position: static !important; height: min(60vh, 500px) !important; }
-          .combined-skyline-text { margin-top: 0 !important; margin-bottom: 0 !important; height: auto !important; min-height: 0 !important; padding: 60px 24px 40px !important; }
-          .combined-hwt-sticky { position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; }
+          .combined-skyline-section { height: 300vh !important; }
+          .combined-skyline-img-sticky { position: sticky !important; top: 0 !important; height: 100vh !important; }
+          .combined-skyline-text { padding: 0 24px !important; }
+          .hwt-cards-container { padding-top: clamp(150px, 30vh, 250px) !important; }
         }
       `}} />
       <section
@@ -320,6 +331,7 @@ function CombinedSkylineHowWeThinkSection() {
 
         {/* Cards container — normal flow, scrolls over heading */}
         <div
+          className="hwt-cards-container"
           data-header-theme="dark"
           style={{
             position: 'relative',
@@ -347,10 +359,26 @@ function CombinedSkylineHowWeThinkSection() {
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
               onTouchStart={(e) => {
-                setHoveredCard(hoveredCard === index ? null : index)
+                const touch = e.touches[0];
+                e.currentTarget.dataset.touchX = String(touch.clientX);
+                e.currentTarget.dataset.touchY = String(touch.clientY);
+                e.currentTarget.dataset.touchScrolled = 'false';
+              }}
+              onTouchMove={(e) => {
+                const touch = e.touches[0];
+                const startX = Number(e.currentTarget.dataset.touchX);
+                const startY = Number(e.currentTarget.dataset.touchY);
+                if (Math.abs(touch.clientX - startX) > 10 || Math.abs(touch.clientY - startY) > 10) {
+                  e.currentTarget.dataset.touchScrolled = 'true';
+                }
               }}
               onTouchEnd={(e) => {
-                // Don't prevent default - allow native scroll
+                if (e.currentTarget.dataset.touchScrolled !== 'true') {
+                  setHoveredCard(hoveredCard === index ? null : index);
+                }
+                e.currentTarget.dataset.touchX = '';
+                e.currentTarget.dataset.touchY = '';
+                e.currentTarget.dataset.touchScrolled = '';
               }}
               onTouchCancel={() => setHoveredCard(null)}
             >
@@ -529,11 +557,27 @@ function SimpleIndustriesSection() {
                   }}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  onTouchStart={() => {
-                    setHoveredIndex(hoveredIndex === index ? null : index);
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    e.currentTarget.dataset.touchX = String(touch.clientX);
+                    e.currentTarget.dataset.touchY = String(touch.clientY);
+                    e.currentTarget.dataset.touchScrolled = 'false';
                   }}
-                  onTouchEnd={() => {
-                    // Don't prevent default - allow native scroll
+                  onTouchMove={(e) => {
+                    const touch = e.touches[0];
+                    const startX = Number(e.currentTarget.dataset.touchX);
+                    const startY = Number(e.currentTarget.dataset.touchY);
+                    if (Math.abs(touch.clientX - startX) > 10 || Math.abs(touch.clientY - startY) > 10) {
+                      e.currentTarget.dataset.touchScrolled = 'true';
+                    }
+                  }}
+                  onTouchEnd={(e) => {
+                    if (e.currentTarget.dataset.touchScrolled !== 'true') {
+                      setHoveredIndex(hoveredIndex === index ? null : index);
+                    }
+                    e.currentTarget.dataset.touchX = '';
+                    e.currentTarget.dataset.touchY = '';
+                    e.currentTarget.dataset.touchScrolled = '';
                   }}
                   onTouchCancel={() => setHoveredIndex(null)}
                 >
@@ -771,6 +815,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
         style={{
           position: 'relative',
           display: 'inline-block',
+          minHeight: '52px',
         }}
       >
         {/* Button — remains in normal flow, preserves space */}
@@ -994,7 +1039,10 @@ function HeroContentSection() {
             color: #4b5563;
           }
           .hero-cta-buttons {
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            width: 100%;
           }
           .hero-right-image {
             display: none;
@@ -1036,61 +1084,59 @@ function HeroContentSection() {
             gap: '16px',
             flexWrap: 'wrap',
           }}>
-              {!isFormExpanded && (
-                <a
-                  key="get-in-touch-btn"
-                  href="https://form.typeform.com/to/XPforiEB"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 10,
-                    background: '#ffffff',
-                    padding: '1em 1.8em',
-                    borderRadius: 10,
-                    border: '2px solid rgba(0, 0, 0, 0.1)',
-                    cursor: 'pointer',
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    color: '#032CC8',
-                    fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                    textDecoration: 'none',
-                    boxShadow: '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
-                    transition: 'opacity 0.2s, transform 0.2s, box-shadow 0.2s',
-                    opacity: isFormExpanded ? 0 : 1,
-                    transform: 'scale(1)',
-                    // iOS Safari tap optimization
-                    WebkitTapHighlightColor: 'transparent',
-                    touchAction: 'manipulation',
-                  }}
-                  // CSS-based hover for smooth non-stuck animations
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(8px)';
-                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0px)';
-                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
-                  }}
-                  // Touch event handlers to force-reset animation on mobile
-                  onTouchStart={(e) => {
-                    e.currentTarget.style.transform = 'translateY(8px)';
-                    e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
-                  }}
-                  onTouchEnd={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0px)';
-                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
-                  }}
-                  onTouchCancel={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0px)';
-                    e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
-                  }}
-                >
-                  Get In Touch
-                </a>
-              )}
+              <a
+                key="get-in-touch-btn"
+                href="https://form.typeform.com/to/XPforiEB"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 10,
+                  background: '#ffffff',
+                  padding: '1em 1.8em',
+                  borderRadius: 10,
+                  border: '2px solid rgba(0, 0, 0, 0.1)',
+                  cursor: isFormExpanded ? 'default' : 'pointer',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: '#032CC8',
+                  fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                  textDecoration: 'none',
+                  boxShadow: '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)',
+                  transition: 'opacity 0.3s ease, transform 0.2s, box-shadow 0.2s',
+                  opacity: isFormExpanded ? 0 : 1,
+                  pointerEvents: isFormExpanded ? 'none' : 'auto',
+                  // iOS Safari tap optimization
+                  WebkitTapHighlightColor: 'transparent',
+                  touchAction: 'manipulation',
+                }}
+                // CSS-based hover for smooth non-stuck animations
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(8px)';
+                  e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0px)';
+                  e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
+                }}
+                // Touch event handlers to force-reset animation on mobile
+                onTouchStart={(e) => {
+                  e.currentTarget.style.transform = 'translateY(8px)';
+                  e.currentTarget.style.boxShadow = 'inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2), inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7), -0.5px -0.5px 0px rgba(255, 255, 255, 1), 0.5px 0.5px 0px rgba(0, 0, 0, 0.15), 0px 12px 10px -10px rgba(0, 0, 0, 0.05)';
+                }}
+                onTouchEnd={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0px)';
+                  e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
+                }}
+                onTouchCancel={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0px)';
+                  e.currentTarget.style.boxShadow = '6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7)';
+                }}
+              >
+                Get In Touch
+              </a>
               <ExpandableEmailSignup onExpandChange={setIsFormExpanded} />
             </div>
         </div>
@@ -1384,18 +1430,90 @@ function AccordionColumn({
   );
 }
 
+// Mobile horizontal carousel for What We Do section
+function MobileWhatWeDoCarousel({ tiles }: { tiles: { name: string; description: string; expandedContent: string; image: string }[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const cardWidth = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth : 1;
+      const gap = 16;
+      const idx = Math.round(scrollLeft / (cardWidth + gap));
+      setActiveIndex(Math.min(idx, tiles.length - 1));
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [tiles.length]);
+
+  return (
+    <div>
+      <div
+        ref={scrollRef}
+        style={{
+          display: 'flex',
+          gap: '16px',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          paddingBottom: '8px',
+        }}
+      >
+        <style dangerouslySetInnerHTML={{__html: `
+          .wwd-mobile-scroll::-webkit-scrollbar { display: none; }
+        `}} />
+        {tiles.map((tile, idx) => (
+          <div
+            key={idx}
+            className="wwd-mobile-scroll"
+            style={{
+              flexShrink: 0,
+              width: 'calc(100vw - 64px)',
+              height: '320px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              position: 'relative',
+              scrollSnapAlign: 'start',
+            }}
+          >
+            <BentoCard
+              name={tile.name}
+              className="h-full"
+              description={tile.description}
+              expandedContent={tile.expandedContent}
+              href="/solutions"
+              cta="Learn More"
+              Icon={() => <div />}
+              background={<img src={tile.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+            />
+          </div>
+        ))}
+      </div>
+      {/* Progress dots */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
+        {tiles.map((_, idx) => (
+          <div
+            key={idx}
+            style={{
+              width: activeIndex === idx ? '24px' : '8px',
+              height: '8px',
+              borderRadius: '4px',
+              background: activeIndex === idx ? '#025082' : '#d1d5db',
+              transition: 'width 0.3s ease, background 0.3s ease',
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Static What We Do Section
 function WhatWeDoAnimated() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   const leftTop = {
     name: "Expansion & Cross-Sell",
     description: "15-30% more pipeline from existing customers.",
@@ -1427,81 +1545,80 @@ function WhatWeDoAnimated() {
     image: "/images/what-we-do/stack-new.webp",
   };
 
+  const mobileTiles = [middle, leftTop, rightTop, leftBottom, rightBottom];
+
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        background: '#ffffff',
-        padding: 'clamp(200px, 28vh, 320px) clamp(24px, 4vw, 48px) clamp(120px, 18vh, 200px)',
-      }}
-    >
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-      <h2
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .wwd-desktop { display: block; }
+        .wwd-mobile { display: none; }
+        @media (max-width: 768px) {
+          .wwd-desktop { display: none; }
+          .wwd-mobile { display: block; }
+        }
+      `}} />
+      <div
         style={{
-          fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-          fontWeight: 700,
-          color: '#1a1a1a',
-          marginBottom: 48,
-          textTransform: 'uppercase',
-          letterSpacing: '-0.02em',
-          lineHeight: 1.1,
+          position: 'relative',
+          width: '100%',
+          background: '#ffffff',
+          padding: 'clamp(200px, 28vh, 320px) clamp(24px, 4vw, 48px) clamp(120px, 18vh, 200px)',
         }}
       >
-        WHAT WE DO
-      </h2>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        <h2
+          style={{
+            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+            fontWeight: 700,
+            color: '#1a1a1a',
+            marginBottom: 48,
+            textTransform: 'uppercase',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.1,
+          }}
+        >
+          WHAT WE DO
+        </h2>
 
-      {isMobile ? (
-        /* Mobile: Single column vertical stack */
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {[middle, leftTop, rightTop, leftBottom, rightBottom].map((tile, idx) => (
-            <div key={idx} style={{ height: '280px', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+        {/* Mobile: Horizontal swipe carousel */}
+        <div className="wwd-mobile">
+          <MobileWhatWeDoCarousel tiles={mobileTiles} />
+        </div>
+
+        {/* Desktop: 3-column grid with accordion columns */}
+        <div className="wwd-desktop">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gridTemplateRows: '240px 240px',
+              gap: '16px',
+            }}
+          >
+            {/* Left Column - Accordion */}
+            <AccordionColumn topTile={leftTop} bottomTile={leftBottom} column={1} />
+
+            {/* Middle Column - Static full height */}
+            <div style={{ gridColumn: 2, gridRow: '1 / 3' }}>
               <BentoCard
-                name={tile.name}
+                name={middle.name}
                 className="h-full"
-                description={tile.description}
-                expandedContent={tile.expandedContent}
+                description={middle.description}
+                expandedContent={middle.expandedContent}
                 href="/solutions"
                 cta="Learn More"
                 Icon={() => <div />}
-                background={<img src={tile.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                background={<img src={middle.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
               />
             </div>
-          ))}
-        </div>
-      ) : (
-        /* Desktop: 3-column grid with accordion columns */
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gridTemplateRows: '240px 240px',
-            gap: '16px',
-          }}
-        >
-          {/* Left Column - Accordion */}
-          <AccordionColumn topTile={leftTop} bottomTile={leftBottom} column={1} />
 
-          {/* Middle Column - Static full height */}
-          <div style={{ gridColumn: 2, gridRow: '1 / 3' }}>
-            <BentoCard
-              name={middle.name}
-              className="h-full"
-              description={middle.description}
-              expandedContent={middle.expandedContent}
-              href="/solutions"
-              cta="Learn More"
-              Icon={() => <div />}
-              background={<img src={middle.image} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-            />
+            {/* Right Column - Accordion */}
+            <AccordionColumn topTile={rightTop} bottomTile={rightBottom} column={3} />
           </div>
-
-          {/* Right Column - Accordion */}
-          <AccordionColumn topTile={rightTop} bottomTile={rightBottom} column={3} />
         </div>
-      )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -87,10 +87,28 @@ const BentoCard = ({
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onTouchStart={() => setIsHovered(true)}
+        onTouchStart={(e) => {
+          const touch = e.touches[0];
+          e.currentTarget.dataset.touchX = String(touch.clientX);
+          e.currentTarget.dataset.touchY = String(touch.clientY);
+          e.currentTarget.dataset.touchScrolled = 'false';
+        }}
+        onTouchMove={(e) => {
+          const touch = e.touches[0];
+          const startX = Number(e.currentTarget.dataset.touchX);
+          const startY = Number(e.currentTarget.dataset.touchY);
+          if (Math.abs(touch.clientX - startX) > 10 || Math.abs(touch.clientY - startY) > 10) {
+            e.currentTarget.dataset.touchScrolled = 'true';
+          }
+        }}
         onTouchEnd={(e) => {
-          // Allow touch to toggle on mobile
-          setTimeout(() => setIsHovered(false), 2000);
+          if (e.currentTarget.dataset.touchScrolled !== 'true') {
+            setIsHovered(true);
+            setTimeout(() => setIsHovered(false), 3000);
+          }
+          e.currentTarget.dataset.touchX = '';
+          e.currentTarget.dataset.touchY = '';
+          e.currentTarget.dataset.touchScrolled = '';
         }}
         onTouchCancel={() => setIsHovered(false)}
         style={{

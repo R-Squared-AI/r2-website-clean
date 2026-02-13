@@ -325,7 +325,7 @@ export function DiagonalCarousel({ items, title = "Why leading teams trust R²" 
               <motion.div
                 initial={{ scale: 1.1, opacity: 0.8 }}
                 animate={{
-                  scale: isExpanded ? 1 : 1.1,
+                  scale: isExpanded ? 1.05 : 1.1,
                   opacity: isExpanded ? 1 : 0.8,
                 }}
                 transition={{
@@ -345,6 +345,7 @@ export function DiagonalCarousel({ items, title = "Why leading teams trust R²" 
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    objectPosition: 'center top',
                   }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';

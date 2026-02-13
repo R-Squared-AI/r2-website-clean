@@ -318,6 +318,8 @@ export function LiquidGlassHeader() {
   const [logoTheme, setLogoTheme] = useState<'light' | 'dark'>('light');
   // Track hamburger theme
   const [hamburgerTheme, setHamburgerTheme] = useState<'light' | 'dark'>('light');
+  // Track mobile menu link themes (per-link, based on what's behind each link)
+  const [mobileMenuLinkThemes, setMobileMenuLinkThemes] = useState<Record<string, 'light' | 'dark'>>({});
   const linkRefs = useRef<Record<string, HTMLElement | null>>({});
   const letterRefs = useRef<Record<string, Record<number, HTMLElement | null>>>({});
   const dropdownTimeoutRef = useRef<number | null>(null);
@@ -922,10 +924,7 @@ export function LiquidGlassHeader() {
         return;
       }
 
-      // Don't update theme detection when mobile menu is open to prevent incorrect detection
-      if (isMobile && isExpanded) {
-        return;
-      }
+      // Continue theme detection even when mobile menu is open — logo/hamburger keep adapting
 
       const headerRect = header.getBoundingClientRect();
       if (!headerRect) {
@@ -1267,6 +1266,105 @@ export function LiquidGlassHeader() {
       observer.disconnect();
     };
   }, [pathname, mounted, headerTheme, isMobile, isExpanded]);
+
+  // Detect per-link themes for mobile menu items based on background behind each link
+  useEffect(() => {
+    if (!isMobile || !isExpanded || !mounted) return;
+
+    const detectMobileMenuThemes = () => {
+      const header = document.querySelector('header');
+      if (!header) return;
+
+      // Temporarily disable pointer events on header and mobile menu overlay
+      const originalPointerEvents = header.style.pointerEvents;
+      header.style.pointerEvents = 'none';
+
+      // Disable all elements inside header
+      const headerChildren = header.querySelectorAll('*');
+      const originals: Array<{ el: HTMLElement; value: string }> = [];
+      headerChildren.forEach((child) => {
+        const el = child as HTMLElement;
+        originals.push({ el, value: el.style.pointerEvents });
+        el.style.pointerEvents = 'none';
+      });
+
+      // Also disable mobile menu overlay
+      const mobileOverlay = document.querySelector('[aria-hidden="true"][style*="position: fixed"][style*="inset: 0"]');
+      let origOverlay = '';
+      if (mobileOverlay) {
+        origOverlay = (mobileOverlay as HTMLElement).style.pointerEvents;
+        (mobileOverlay as HTMLElement).style.pointerEvents = 'none';
+      }
+
+      const viewportCenterX = window.innerWidth / 2;
+      const newThemes: Record<string, 'light' | 'dark'> = {};
+
+      navLinks.forEach((link) => {
+        const linkEl = header.querySelector(`nav a[href="${link.href}"]`) as HTMLElement;
+        if (!linkEl) {
+          newThemes[link.href] = 'light';
+          return;
+        }
+
+        const linkRect = linkEl.getBoundingClientRect();
+        const linkCenterY = linkRect.top + linkRect.height / 2;
+
+        const elementBehind = document.elementFromPoint(viewportCenterX, linkCenterY);
+        let foundTheme: 'light' | 'dark' | null = null;
+
+        if (elementBehind && !elementBehind.closest('header')) {
+          let current: HTMLElement | null = elementBehind as HTMLElement;
+          while (current && current !== document.body) {
+            const theme = current.getAttribute('data-header-theme');
+            if (theme === 'light' || theme === 'dark') {
+              foundTheme = theme as 'light' | 'dark';
+              break;
+            }
+            current = current.parentElement;
+          }
+
+          if (!foundTheme) {
+            let bgElement: HTMLElement | null = elementBehind as HTMLElement;
+            while (bgElement && bgElement !== document.body) {
+              const computedStyle = window.getComputedStyle(bgElement);
+              const bgColor = computedStyle.backgroundColor;
+              if (bgColor && bgColor !== 'transparent' && bgColor !== 'rgba(0, 0, 0, 0)') {
+                const rgbMatch = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+                if (rgbMatch) {
+                  const r = parseInt(rgbMatch[1], 10);
+                  const g = parseInt(rgbMatch[2], 10);
+                  const b = parseInt(rgbMatch[3], 10);
+                  const luminance = (0.2126 * (r / 255)) + (0.7152 * (g / 255)) + (0.0722 * (b / 255));
+                  foundTheme = luminance > 0.5 ? 'light' : 'dark';
+                  break;
+                }
+              }
+              bgElement = bgElement.parentElement;
+            }
+          }
+        }
+
+        newThemes[link.href] = foundTheme || 'light';
+      });
+
+      // Restore pointer events
+      header.style.pointerEvents = originalPointerEvents;
+      originals.forEach(({ el, value }) => { el.style.pointerEvents = value; });
+      if (mobileOverlay) {
+        (mobileOverlay as HTMLElement).style.pointerEvents = origOverlay;
+      }
+
+      setMobileMenuLinkThemes(newThemes);
+    };
+
+    // Run initially and on scroll
+    detectMobileMenuThemes();
+    window.addEventListener('scroll', detectMobileMenuThemes, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', detectMobileMenuThemes);
+    };
+  }, [isMobile, isExpanded, mounted]);
 
   useEffect(() => {
     // Calculate fixed width: from hamburger position (right) to before logo pill (left)
@@ -2304,8 +2402,11 @@ export function LiquidGlassHeader() {
                           }
                         }}
                       >
-                        {/* Mobile menu - use fixed dark text color for visibility on glass background */}
-                        <span style={{ color: '#1f2937' }}>{link.label}</span>
+                        {/* Mobile menu - adapt text color to background behind each link */}
+                        <span style={{
+                          color: mobileMenuLinkThemes[link.href] === 'dark' ? '#f8fafc' : '#1f2937',
+                          transition: 'color 0.3s ease',
+                        }}>{link.label}</span>
                       </Link>
                     );
                   })}

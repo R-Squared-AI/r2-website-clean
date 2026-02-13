@@ -16,7 +16,7 @@ interface FounderFlipCardProps {
   noShadow?: boolean
 }
 
-export function FounderFlipCard({ name, role, image, description, linkedInUrl, index, noShadow = false }: FounderFlipCardProps) {
+export function FounderFlipCard({ name, fullName, role, image, description, linkedInUrl, index, noShadow = false }: FounderFlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -210,42 +210,38 @@ export function FounderFlipCard({ name, role, image, description, linkedInUrl, i
             alignItems: 'center',
           }}
         >
-          {/* Blue pill with name + role at top center */}
+          {/* Name and role - styled text, not a pill */}
           <div
             style={{
-              background: 'linear-gradient(135deg, rgba(2, 80, 130, 0.95) 0%, rgba(1, 58, 95, 0.95) 100%)',
-              padding: '10px 20px',
-              borderRadius: '24px',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
+              textAlign: 'center',
               marginBottom: 'clamp(16px, 2vw, 24px)',
               flexShrink: 0,
             }}
           >
-            <span
+            <div
               style={{
-                color: '#fff',
-                fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+                fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)',
                 fontWeight: 700,
+                color: '#032CC8',
                 fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                whiteSpace: 'nowrap',
+                lineHeight: 1.3,
               }}
             >
-              {name}
-            </span>
-            <span
+              {fullName || name}
+            </div>
+            <div
               style={{
-                color: 'rgba(255, 255, 255, 0.85)',
                 fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
                 fontWeight: 500,
+                color: '#032CC8',
                 fontFamily: "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                whiteSpace: 'nowrap',
+                fontStyle: 'italic',
+                opacity: 0.75,
+                marginTop: 4,
               }}
             >
               {role}
-            </span>
+            </div>
           </div>
 
           {/* Description text - centered */}

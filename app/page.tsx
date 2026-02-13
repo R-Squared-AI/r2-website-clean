@@ -727,11 +727,9 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
         style={{
           position: 'relative',
           display: 'inline-block',
-          minWidth: isExpanded && !isMobile ? '550px' : undefined,
-          minHeight: isExpanded && !isMobile ? '280px' : undefined,
         }}
       >
-        {/* Button — crossfades with form via absolute positioning */}
+        {/* Button — remains in normal flow, preserves space */}
         <button
           onClick={() => !isExpanded && setIsExpanded(true)}
           onMouseEnter={() => setIsHovered(true)}
@@ -769,7 +767,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
           Join Squared Away
         </button>
 
-        {/* Desktop form — overlaid on button, crossfades in */}
+        {/* Desktop form — absolutely positioned, overlays without affecting layout */}
         {!isMobile && isExpanded && (
           <div
             style={{
@@ -781,6 +779,7 @@ function ExpandableEmailSignup({ onExpandChange }: { onExpandChange?: (expanded:
               opacity: iframeLoaded ? 1 : 0,
               transform: iframeLoaded ? 'scale(1)' : 'scale(0.98)',
               transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
+              pointerEvents: 'auto',
             }}
           >
             <iframe
